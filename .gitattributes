@@ -61,3 +61,10 @@
 #*.PDF   diff=astextplain
 #*.rtf   diff=astextplain
 #*.RTF   diff=astextplain
+
+###############################################################################
+#Github linguist ignore list so project is properly attributed
+*.css linguist-detectable=false
+*.js linguist-detectable=false
+*.json linguist-detectable=false
+###############################################################################
