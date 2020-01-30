@@ -23,8 +23,12 @@ namespace IssueTracker
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
+                    if (!hostingContext.HostingEnvironment.IsDevelopment())
+                    {
+                        config.AddSystemsManager("/IssueTracker");
+                    }
 
-                    config.AddSystemsManager("/IssueTracker");
+
                 })
 
                 .ConfigureWebHostDefaults(webBuilder =>
