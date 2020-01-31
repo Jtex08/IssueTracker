@@ -143,6 +143,8 @@ namespace IssueTracker.Data.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    //b.Property<DateTime>("CreatedOn");
+
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
 
