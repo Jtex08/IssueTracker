@@ -109,6 +109,11 @@
     <UpToDateCheckInput Remove="Views\Shared\_StatusMessage.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Tickets\" />
+    <Folder Include="Pages\Projects\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
