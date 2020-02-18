@@ -64,6 +64,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="@(Html.IsMenuActive("/Projects/Index") ? "active" : "")"><a href="~/Projects/Index"><i class="fa fa-folder"></i> Projects</a></li>
                     <li class="@(Html.IsMenuActive("/Projects/AssignedProjects") ? "active" : "")"><a href="~/Projects/AssignedProjects"><i class="fa fa-folder"></i> Assigned Projects</a></li>
                     <li class="@(Html.IsMenuActive("/Projects/CreateNewProject") ? "active" : "")"><a href="~/Projects/CreateNewProject"><i class="fa fa-file"></i> Create New Project</a></li>
                 </ul>
@@ -227,7 +228,7 @@
                 </li>
                 <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
             </ul>*@
-            </li>
+            @*</li>*@
             <li><a href="https://dotnet.express/docs"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
             @*<li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
