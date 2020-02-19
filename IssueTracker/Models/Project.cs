@@ -24,5 +24,10 @@ namespace IssueTracker.Models
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+
+        public Project()
+        {
+            Users = new HashSet<ApplicationUser>();
+        }
     }
 }

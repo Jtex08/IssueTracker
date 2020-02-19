@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using IssueTracker.Models;
 
 
 
@@ -16,5 +17,12 @@ namespace IssueTracker.Data
     public class ApplicationUser : IdentityUser
     {
 
+
+        public ApplicationUser()
+        {
+
+
+
+        }
     }
 }

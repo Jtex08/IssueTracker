@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Data;
 using Microsoft.AspNetCore.Identity;
+using IssueTracker.Models;
+using System.Data;
 
 namespace IssueTracker.Controllers
 {
@@ -42,19 +44,34 @@ namespace IssueTracker.Controllers
         // POST: Projects/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Title,Description")] Project project)
         {
+            var projectOwner = _userManager.GetUserId(User);
+            var thisUser = _context.Users.Find(projectOwner);
+            project.Users.Add(thisUser);
+
+
+            project.Created = DateTimeOffset.Now;
+
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(project);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            catch
+            catch (DbUpdateException /* ex */)
             {
-                return View();
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
+            return View(project);
         }
+    
 
         // GET: Projects/Edit/5
         public ActionResult Edit(int id)
