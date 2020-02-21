@@ -17,6 +17,8 @@ using IssueTracker.Services;
 using IssueTracker.Services.Mail;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Http;
+
 
 namespace IssueTracker
 {

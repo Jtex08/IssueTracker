@@ -11,6 +11,9 @@ namespace IssueTracker.Models
     {
         public int Id { get; set; } //Id of project
 
+        [Display(Name = "Owner")]
+        public string OwnerUserId { get; set; }        // Foreign Key - Owner of Ticket 
+
         //Unique properties
         [Required(ErrorMessage = "Title is required.")]
         [Display(Name = "Title")]
@@ -28,6 +31,7 @@ namespace IssueTracker.Models
         public Project()
         {
             Users = new HashSet<ApplicationUser>();
+            Tickets = new HashSet<Ticket>();
         }
     }
 }

@@ -9,6 +9,8 @@ using IssueTracker.Data;
 using Microsoft.AspNetCore.Identity;
 using IssueTracker.Models;
 using System.Data;
+using System.Security.Claims;
+using IssueTracker.Services.Profile;
 
 namespace IssueTracker.Controllers
 {
@@ -16,11 +18,13 @@ namespace IssueTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ProfileManager _profileManager;
 
-        public ProjectsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public ProjectsController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, ProfileManager profileManager)
         {
             _userManager = userManager;
             _context = context;
+            _profileManager = profileManager;
         }
 
         // GET: Projects
@@ -46,12 +50,14 @@ namespace IssueTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description")] Project project)
         {
-            var projectOwner = _userManager.GetUserId(User);
-            var thisUser = _context.Users.Find(projectOwner);
+            var userIDD = _profileManager.CurrentUser.Id;
+            //var projectOwner = _userManager.GetUserId(User);
+            var thisUser = _context.Users.Find(userIDD);
             project.Users.Add(thisUser);
 
 
             project.Created = DateTimeOffset.Now;
+            project.OwnerUserId = userIDD;
 
             try
             {
