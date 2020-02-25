@@ -11,23 +11,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
 using IssueTracker.Services.Profile;
 
 namespace IssueTracker.Controllers
 {
     public class TicketsController : Controller
     {
-        private ApplicationDbContext db;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        // GET: Tickets
-        public ActionResult Index()
-        {
-            var id = User.Identity.Name;
-            var userId = _userManager;
+        private readonly ApplicationDbContext _context;       
+        private readonly ProfileManager _profileManager;
 
-            return View();
+
+        public TicketsController(ApplicationDbContext context, ProfileManager profileManager)
+        {
+            _context = context;
+            _profileManager = profileManager;
+        }
+
+        // GET: Tickets
+        public async Task<IActionResult> Index()
+        {
+
+            return View(await _context.Tickets.ToListAsync());
         }
 
         // GET: Tickets/Details/5

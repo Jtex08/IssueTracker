@@ -40,8 +40,8 @@ namespace IssueTracker.Models
         public bool Archived { get; set; }
 
         //nav-parent
-        public virtual ApplicationUser OwnerUser { get; set; }
-        public virtual Project Project { get; set; }
+        //public virtual ApplicationUser OwnerUser { get; set; }
+        //public virtual Project Project { get; set; }
 
 
     }

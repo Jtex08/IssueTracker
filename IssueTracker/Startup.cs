@@ -58,6 +58,10 @@ namespace IssueTracker
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //services.AddDefaultIdentity<ApplicationUser>()
+            // .AddEntityFrameworkStores<ApplicationDbContext>()
+            //.AddDefaultUI();
+
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
@@ -138,7 +142,7 @@ namespace IssueTracker
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

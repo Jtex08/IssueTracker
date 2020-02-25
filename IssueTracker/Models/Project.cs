@@ -9,7 +9,7 @@ namespace IssueTracker.Models
 {
     public class Project
     {
-        public int Id { get; set; } //Id of project
+        public int Id { get; set; } //Id of project       
 
         [Display(Name = "Owner")]
         public string OwnerUserId { get; set; }        // Foreign Key - Owner of Ticket 
@@ -25,13 +25,18 @@ namespace IssueTracker.Models
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
-        public virtual ICollection<Ticket> Tickets { get; set; }
 
-        public Project()
-        {
-            Users = new HashSet<ApplicationUser>();
-            Tickets = new HashSet<Ticket>();
-        }
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
+
+        //public virtual ICollection<ApplicationUser> Users { get; set; }
+        //public virtual ICollection<Ticket> Tickets { get; set; }
+
+        //public Project()
+        //{
+        //    Users = new HashSet<ApplicationUser>();
+        //    Tickets = new HashSet<Ticket>();
+        //}
     }
 }

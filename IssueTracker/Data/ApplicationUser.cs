@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using IssueTracker.Models;
-using Microsoft.AspNetCore.Identity;
+
 
 
 
@@ -17,13 +17,13 @@ namespace IssueTracker.Data
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-
+        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
 
         public ApplicationUser()
         {
-
-
-
         }
+    
     }
+ 
 }

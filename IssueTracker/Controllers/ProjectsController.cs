@@ -50,21 +50,32 @@ namespace IssueTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description")] Project project)
         {
-            var userIDD = _profileManager.CurrentUser.Id;
-            //var projectOwner = _userManager.GetUserId(User);
-            var thisUser = _context.Users.Find(userIDD);
-            project.Users.Add(thisUser);
+            //var userIDD = _profileManager.CurrentUser.Id;
+            //project.Users.Add(_profileManager.CurrentUser);
+            project.OwnerUserId = _profileManager.CurrentUser.Id;
+            //var thisUser = _context.Users.FindAsync(userIDD);
+            //project.Users.Add(thisUser);
 
+            //var tuck = _userManager.GetUserId(User);
 
             project.Created = DateTimeOffset.Now;
-            project.OwnerUserId = userIDD;
+            //project.OwnerUserId = userIDD;
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(project);
+                    _context.Projects.Add(project);
                     await _context.SaveChangesAsync();
+
+                    ProjectUser projUser = new ProjectUser();
+
+                    projUser.UserId = _profileManager.CurrentUser.Id;
+                    projUser.ProjectId = project.Id;
+
+                    _context.ProjectUsers.Add(projUser);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
             }
