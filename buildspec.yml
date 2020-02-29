@@ -6,7 +6,7 @@ phases:
         commands:
             - cd ./IssueTracker
             - dotnet restore
-            - dotnet publish IssueTracker -c Release -o ../output
+            - dotnet publish IssueTracker/IssueTracker.csproj -c Release -o ../output
             
 artifacts:
   files:
