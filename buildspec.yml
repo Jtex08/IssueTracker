@@ -5,10 +5,8 @@ phases:
     build:
         commands:
             - cd ./IssueTracker
-            - dotnet restore
-            - dotnet publish IssueTracker/IssueTracker.csproj -c Release -o ../output
+            - dotnet publish -c release -o ./build_output ./IssueTracker/IssueTracker/IssueTracker.csproj
             
 artifacts:
   files:
-    - '**/*'
-  base-directory: ./IssueTracker/output
+    - IssueTracker/IssueTracker/build_output/*
