@@ -1,14 +1,14 @@
 version: 0.2
 
 phases:
-    install:
-        runtime-versions:
-            dotnet: 3.1
-    
+   
     build:
         commands:
-            - dotnet publish -c release -o ./build_output ./IssueTracker/IssueTracker/IssueTracker.csproj
+            - cd ./IssueTracker
+            - dotnet restore
+            - dotnet publish IssueTracker -c Release -o ../output
             
 artifacts:
   files:
-    - IssueTracker/IssueTracker/build_output/*
+    - '**/*'
+  base-directory: ./IssueTracker/output
