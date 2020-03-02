@@ -4,9 +4,8 @@ phases:
    
     build:
         commands:
-            - cd ./IssueTracker
-            - dotnet publish -c release
+            - dotnet publish -c release ./output IssueTracker/IssueTracker.csproj
             
 artifacts:
   files:
-    - IssueTracker\bin\release\netcoreapp3.1\publish\*
+    - ./output/**/*
