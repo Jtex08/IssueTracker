@@ -9,4 +9,4 @@ phases:
             
 artifacts:
   files:
-    - IssueTracker/IssueTracker/build_output/*
+    - src\IssueTracker\bin\release\netcoreapp3.1\publish\*
