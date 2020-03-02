@@ -4,7 +4,7 @@ phases:
    
     build:
         commands:
-            - dotnet publish -c release ./output IssueTracker/IssueTracker.csproj
+            - dotnet publish IssueTracker/IssueTracker.csproj -c release -o ./output 
             
 artifacts:
   files:
