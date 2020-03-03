@@ -10,3 +10,4 @@ artifacts:
   files:
     - ./output/**/*
     - appspec.yml
+    - Scripts/*

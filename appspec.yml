@@ -2,4 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /output
-    destination: /home/ec2-user/testapp
+    destination: /var/www/IssueTracker
+hooks:
+  ApplicationStop:
+    - location: Scripts/stopApp.sh
+      timeout: 300
+  ApplicationStart:
+    - location: Scripts/startApp.sh
+      timeout: 300
