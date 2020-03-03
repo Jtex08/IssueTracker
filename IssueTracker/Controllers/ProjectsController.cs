@@ -34,9 +34,24 @@ namespace IssueTracker.Controllers
         }
 
         // GET: Projects/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.Tickets)                
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
         }
 
         // GET: Projects/Create
@@ -114,25 +129,52 @@ namespace IssueTracker.Controllers
         }
 
         // GET: Projects/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+
+            return View(project);
         }
 
         // POST: Projects/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null)
             {
-                // TODO: Add delete logic here
-
                 return RedirectToAction(nameof(Index));
             }
-            catch
+
+            try
             {
-                return View();
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
         }
     }
