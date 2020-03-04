@@ -103,29 +103,52 @@ namespace IssueTracker.Controllers
             }
             return View(project);
         }
-    
+
 
         // GET: Projects/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return View(project);
         }
 
         // POST: Projects/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Created")] Project project)
         {
-            try
+            if (id != project.Id)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                try
+                {
+                    project.Updated = DateTimeOffset.Now;
+                    _context.Update(project);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
             }
+            return View(project);
         }
 
         // GET: Projects/Delete/5
