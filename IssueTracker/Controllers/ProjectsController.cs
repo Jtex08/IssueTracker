@@ -30,7 +30,9 @@ namespace IssueTracker.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Projects.ToListAsync());
+            var id = _profileManager.CurrentUser.Id;
+            var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == id));
+            return View(await projects.ToListAsync());
         }
 
         // GET: Projects/Details/5
@@ -67,7 +69,7 @@ namespace IssueTracker.Controllers
         {
             //var userIDD = _profileManager.CurrentUser.Id;
             //project.Users.Add(_profileManager.CurrentUser);
-            project.OwnerUserId = _profileManager.CurrentUser.Id;
+            //project.OwnerUserId = _profileManager.CurrentUser.Id;
             //var thisUser = _context.Users.FindAsync(userIDD);
             //project.Users.Add(thisUser);
 

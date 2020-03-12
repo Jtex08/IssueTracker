@@ -65,7 +65,6 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="@(Html.IsMenuActive("/Projects/Index") ? "active" : "")"><a href="~/Projects/Index"><i class="fa fa-folder"></i> Projects</a></li>
-                    <li class="@(Html.IsMenuActive("/Projects/AssignedProjects") ? "active" : "")"><a href="~/Projects/AssignedProjects"><i class="fa fa-folder"></i> Assigned Projects</a></li>
                     <li class="@(Html.IsMenuActive("/Projects/CreateNewProject") ? "active" : "")"><a href="~/Projects/Create"><i class="fa fa-file"></i> Create New Project</a></li>
                 </ul>
             </li>
@@ -78,8 +77,8 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="@(Html.IsMenuActive("/Tickets/AssignedTickets") ? "active" : "")"><a href="~/Tickets/AssignedTickets"><i class="fa fa-folder"></i> Assigned Tickets</a></li>
-                    <li class="@(Html.IsMenuActive("/Tickets/CreateNewTicket") ? "active" : "")"><a href="~/Tickets/CreateNewTicket"><i class="fa fa-file"></i> Create New Ticket</a></li>
+                    <li class="@(Html.IsMenuActive("/Tickets/Index") ? "active" : "")"><a href="~/Tickets/Index"><i class="fa fa-folder"></i> Tickets</a></li>
+                    <li class="@(Html.IsMenuActive("/Tickets/Create") ? "active" : "")"><a href="~/Tickets/Create"><i class="fa fa-file"></i> Create New Ticket</a></li>
                 </ul>
             </li>
             @*<li class="@(Html.IsMenuActive("/Widgets") ? "active" : "")">

@@ -11,8 +11,8 @@ namespace IssueTracker.Models
     {
         public int Id { get; set; } //Id of project       
 
-        [Display(Name = "Owner")]
-        public string OwnerUserId { get; set; }        // Foreign Key - Owner of Ticket 
+        //[Display(Name = "Owner")]
+        //public string OwnerUserId { get; set; }        // Foreign Key - Owner of Ticket 
 
         //Unique properties
         [Required(ErrorMessage = "Title is required.")]

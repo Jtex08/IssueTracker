@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using IssueTracker.Services.Profile;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace IssueTracker.Controllers
 {
@@ -30,8 +31,11 @@ namespace IssueTracker.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
+            var id = _profileManager.CurrentUser.Id;
+            var tickets = _context.Tickets.Where(x => x.OwnerUserId == id);
+            return View(await tickets.ToListAsync());
 
-            return View(await _context.Tickets.ToListAsync());
+            //return View(await _context.Tickets.ToListAsync());
         }
 
         // GET: Tickets/Details/5
@@ -43,24 +47,50 @@ namespace IssueTracker.Controllers
         // GET: Tickets/Create
         public ActionResult Create()
         {
-            return View();
+            var ticketView = new TicketCreateViewModel();
+            var userId = _profileManager.CurrentUser.Id;
+            var projectList = new List<Project>();
+
+            var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == userId));
+            projectList = projects.ToList();
+
+            ticketView.Projects = new SelectList(projectList, "Id", "Title");
+
+            return View(ticketView);
         }
 
         // POST: Tickets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Title,Description,SelectedProject")] TicketCreateViewModel ticketView)
         {
             try
             {
-                // TODO: Add insert logic here
+                if(ModelState.IsValid)
+                {
+                    var ticket = new Ticket();
+                    ticket.Title = ticketView.Title;
+                    ticket.Description = ticketView.Description;
+                    ticket.ProjectId = ticketView.SelectedProject;
+                    ticket.OwnerUserId = _profileManager.CurrentUser.Id;
+                    ticket.Created = DateTimeOffset.Now;
+                    _context.Tickets.Add(ticket);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
 
-                return RedirectToAction(nameof(Index));
+
+
             }
-            catch
+            catch (DbUpdateException /* ex */)
             {
-                return View();
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
             }
+
+            return View(ticketView);
         }
 
         // GET: Tickets/Edit/5

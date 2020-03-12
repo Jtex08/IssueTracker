@@ -11,8 +11,8 @@ namespace IssueTracker.Models
     {
         public int Id { get; set; }     //Id of ticket
 
-        [Required(ErrorMessage = "Project is required.")]
-        [Display(Name = "Project")]
+        //[Required(ErrorMessage = "Project is required.")]
+        //[Display(Name = "Project")]
         public int ProjectId { get; set; }             // Foreign Key - Project the ticket belongs to
 
         [Display(Name = "Owner")]
