@@ -39,9 +39,50 @@ namespace IssueTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets
+             .AsNoTracking()
+             .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+
+
+            //Ticket Properties
+            var ticketDetails = new TicketDetailsViewModel();
+            ticketDetails.Id = ticket.Id;
+            ticketDetails.Title = ticket.Title;
+            ticketDetails.Created = ticket.Created;
+            ticketDetails.Updated = ticket.Updated;
+            ticketDetails.Description = ticket.Description;
+            ticketDetails.PercentComplete = ticket.PercentComplete;
+
+            var ownerName = _context.Users.Find(ticket.OwnerUserId);
+
+
+
+            ticketDetails.OwnerName = ownerName.UserName;
+
+            //Project Properties
+            var project = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId);
+
+            ticketDetails.ProjectTitle = project.Title;
+
+
+            return View(ticketDetails);
+
+
         }
 
         // GET: Tickets/Create
@@ -94,26 +135,74 @@ namespace IssueTracker.Controllers
         }
 
         // GET: Tickets/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
-        }
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var ticket = await _context.Tickets
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            //Ticket Properties
+            var ticketEdit = new TicketEditViewModel();
+            ticketEdit.Id = ticket.Id;
+            ticketEdit.Title = ticket.Title;
+            ticketEdit.Created = ticket.Created;
+            ticketEdit.Updated = ticket.Updated;
+            ticketEdit.Description = ticket.Description;
+            ticketEdit.PercentComplete = ticket.PercentComplete;
+            ticketEdit.OwnerUserId = ticket.OwnerUserId;
+
+            //Project Properties
+            var project = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId);
+
+            ticketEdit.ProjectTitle = project.Title;
+
+            return View(ticketEdit);
+        }
         // POST: Tickets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit([Bind("Id,Title,Description,Created,Updated,PercentComplete,")] TicketEditViewModel ticketEdit)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                try
+                {
+                    var ticket = await _context.Tickets
+                        .FirstOrDefaultAsync(m => m.Id == ticketEdit.Id);
 
-                return RedirectToAction(nameof(Index));
+                    ticket.Title = ticketEdit.Title;
+                    ticket.Description = ticketEdit.Description;
+                    ticket.Created = ticketEdit.Created;
+                    ticket.Updated = DateTimeOffset.Now;
+                    ticket.PercentComplete = ticketEdit.PercentComplete;
+
+                    _context.Update(ticket);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                catch (DbUpdateException /* ex */)
+                {
+                    //Log the error (uncomment ex variable name and write a log.)
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(ticketEdit);
+   
         }
 
         // GET: Tickets/Delete/5
