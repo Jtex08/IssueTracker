@@ -60,16 +60,16 @@
                 </dd>
 
                 @*<dt>
-            @Html.DisplayNameFor(model => model.AssignedToUserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AssignedToUserName)
-            @if (User.IsInRole("Project Manager"))
-            {
-                @Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-                @Html.ActionLink("Edit", "AssignUser", new { id = Model.Id }, new { htmlAttributes = new { @class = "form-control" } })
-            }
-        </dd>*@
+                        @Html.DisplayNameFor(model => model.AssignedToUserName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AssignedToUserName)
+                        @if (User.IsInRole("Project Manager"))
+                        {
+                            @Html.Raw("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                            @Html.ActionLink("Edit", "AssignUser", new { id = Model.Id }, new { htmlAttributes = new { @class = "form-control" } })
+                        }
+                    </dd>*@
                 <dt></dt>
                 <dd>
                     <br />
@@ -78,53 +78,53 @@
             </dl>
         </div>
         @*<div class="col-lg-6">
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketPriority)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.TicketPriority)
-                    @if (Model.TicketPriority.Equals("Critical"))
-                    {
-                        <span class="label label-danger">Critical</span>
-                    }
-                    else if (Model.TicketPriority.Equals("High"))
-                    {
-                        <span class="label label-warning">High</span>
-                    }
-                    else if (Model.TicketPriority.Equals("Medium"))
-                    {
-                        <span class="label label-primary">Medium</span>
-                    }
-                    else if (Model.TicketPriority.Equals("Low"))
-                    {
-                        <span class="label label-default">Low</span>
-                    }
-                </dd>
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TicketPriority)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TicketPriority)
+                        @if (Model.TicketPriority.Equals("Critical"))
+                        {
+                            <span class="label label-danger">Critical</span>
+                        }
+                        else if (Model.TicketPriority.Equals("High"))
+                        {
+                            <span class="label label-warning">High</span>
+                        }
+                        else if (Model.TicketPriority.Equals("Medium"))
+                        {
+                            <span class="label label-primary">Medium</span>
+                        }
+                        else if (Model.TicketPriority.Equals("Low"))
+                        {
+                            <span class="label label-default">Low</span>
+                        }
+                    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketType)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.TicketType)
-                </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TicketType)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TicketType)
+                    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.TicketStatus)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.TicketStatus)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.OwnerName)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.OwnerName)
-                </dd>
-                <dt></dt>
-                <dd>@Html.ActionLink("Ticket History", "History", new { id = Model.Id }, null)</dd>
-            </dl>
-        </div>*@
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TicketStatus)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.TicketStatus)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.OwnerName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.OwnerName)
+                    </dd>
+                    <dt></dt>
+                    <dd>@Html.ActionLink("Ticket History", "History", new { id = Model.Id }, null)</dd>
+                </dl>
+            </div>*@
     </div>
 </div>
 <div>
