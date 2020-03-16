@@ -169,6 +169,7 @@ namespace IssueTracker.Controllers
 
             return View(ticketEdit);
         }
+
         // POST: Tickets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
