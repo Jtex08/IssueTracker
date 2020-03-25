@@ -36,6 +36,7 @@ namespace IssueTracker.Services.Profile
 
         public bool IsHasPassword(ApplicationUser user)
         {
+
             return _userManager.HasPasswordAsync(user).Result;
         }
 

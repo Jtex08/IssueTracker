@@ -139,7 +139,7 @@
                         form[0].reset();
                     },
                     error: function (jxqr, error, status) {
-                        // парсинг json-объекта
+                     
                         console.log(jxqr);
                         console.log(error);
                         console.log(status);
@@ -148,21 +148,21 @@
                         }
                         else {
                             var response = JSON.parse(jxqr.responseText);
-                            // добавляем общие ошибки модели
+                            
                             if (response) {
 
                                 $.each(response, function (index, item) {
                                     $('#panelChangePasswordErrors').append("<p>" + item + "</p>");
                                 });
                             }
-                            // добавляем ошибки свойства Name
+                        
                             if (response['Name']) {
 
                                 $.each(response['Name'], function (index, item) {
                                     $('#panelChangePasswordErrors').append("<p>" + item + "</p>");
                                 });
                             }
-                            // добавляем ошибки свойства Age
+                         
                             if (response['Age']) {
                                 $.each(response['Age'], function (index, item) {
                                     $('#panelChangePasswordErrors').append("<p>" + item + "</p>");

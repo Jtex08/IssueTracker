@@ -31,6 +31,7 @@ namespace IssueTracker.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
+            
             var id = _profileManager.CurrentUser.Id;
             var tickets = _context.Tickets.Where(x => x.OwnerUserId == id);
             return View(await tickets.ToListAsync());
