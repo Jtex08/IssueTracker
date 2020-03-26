@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ApplicationUser>
+@inject IssueTracker.Services.Profile.ProfileManager ProfileManager
 
 @{
     ViewData["Title"] = "Index";
@@ -8,13 +9,21 @@
 <a asp-action="Create" class="btn btn-primary">Create a User</a>
 
 <table class="table table-sm table-bordered">
-    <tr><th>ID</th><th>Name</th><th>Email</th></tr>
+    <tr><th>ID</th><th>Name</th><th>Email</th><th>Roles</th><th>Delete</th></tr>
     @foreach (ApplicationUser user in Model)
     {
         <tr>
             <td>@user.Id</td>
             <td>@user.UserName</td>
             <td>@user.Email</td>
+            <td>@ProfileManager.UserRoles(user)</td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </td>
         </tr>
     }
 </table>

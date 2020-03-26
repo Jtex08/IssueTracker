@@ -44,5 +44,14 @@ namespace IssueTracker.Services.Profile
         {
             return _userManager.IsEmailConfirmedAsync(user).Result;
         }
+
+        public string UserRoles(ApplicationUser user)
+        {
+           IList<string> _userRoles = _userManager.GetRolesAsync(user).Result;
+
+
+
+            return string.Join(" , ", _userRoles);
+        }
     }
 }

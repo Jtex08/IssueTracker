@@ -11,9 +11,11 @@ using IssueTracker.Models;
 using System.Data;
 using System.Security.Claims;
 using IssueTracker.Services.Profile;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IssueTracker.Controllers
 {
+    [Authorize(Roles = "Admin,Project Manager,Developer,Submitter")]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;

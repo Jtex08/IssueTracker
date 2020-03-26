@@ -13,9 +13,11 @@ using System.Web;
 using Microsoft.AspNetCore.Authentication;
 using IssueTracker.Services.Profile;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IssueTracker.Controllers
 {
+    [Authorize(Roles = "Admin,Project Manager,Developer,Submitter")]
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;       
