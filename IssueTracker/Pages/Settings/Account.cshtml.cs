@@ -7,18 +7,43 @@ using IssueTracker.Services.Mail;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using IssueTracker.Services.Profile;
 
 namespace IssueTracker.Pages.Settings
 {
     public class AccountModel : PageModel
     {
-        public AccountModel() 
+
+        private readonly ProfileManager _profileManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public AccountModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ProfileManager profileManager) 
         {
+            _profileManager = profileManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult OnGet()
         {
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var user = _profileManager.CurrentUser;
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignOutAsync();
+                    return RedirectToPage("/Index");
+                }
+                else
+                    return Page();
+            }
+            else return Page();
         }
     }
 }

@@ -53,5 +53,10 @@ namespace IssueTracker.Services.Profile
 
             return string.Join(" , ", _userRoles);
         }
+
+        public bool IsInRole(string role)
+        {
+            return _httpContextAccessor.HttpContext.User.IsInRole(role);
+        }
     }
 }
