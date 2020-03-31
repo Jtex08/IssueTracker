@@ -20,6 +20,12 @@ namespace IssueTracker.Data
 
         public DbSet<ProjectUser> ProjectUsers { get; set; }
 
+        public DbSet<TicketStatus> TicketStatuses { get; set; }
+
+        public DbSet<TicketType> TicketTypes { get; set; }
+
+        public DbSet<TicketPriority> TicketPriorities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

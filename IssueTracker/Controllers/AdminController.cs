@@ -17,22 +17,29 @@ namespace IssueTracker.Controllers
     public class AdminController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AdminController(UserManager<ApplicationUser> userManager)
+        public AdminController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
+            var adminIndex = new AdminViewModel();
+            adminIndex.applicationUsers = _userManager.Users;
+            adminIndex.ticketStatuses = _context.TicketStatuses;
 
-            return View(_userManager.Users);
+
+
+            return View(adminIndex);
         }
 
-        public ViewResult Create() => View();
+        public ViewResult CreateUser() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserCreateViewModel user)
+        public async Task<IActionResult> CreateUser(UserCreateViewModel user)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +65,7 @@ namespace IssueTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
@@ -73,6 +80,32 @@ namespace IssueTracker.Controllers
                 ModelState.AddModelError("", "User Not Found");
             return View("Index", _userManager.Users);
         }
+
+        public ViewResult CreateStatus() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> CreateStatus(TicketStatus ticketStatus)
+        {
+            var status = new TicketStatus();
+            status.Name = ticketStatus.Name;
+
+            _context.TicketStatuses.Add(status);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteStatus(int id)
+        {
+            var status = await _context.TicketStatuses.FindAsync(id);
+            _context.TicketStatuses.Remove(status);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
 
         private void Errors(IdentityResult result)
         {

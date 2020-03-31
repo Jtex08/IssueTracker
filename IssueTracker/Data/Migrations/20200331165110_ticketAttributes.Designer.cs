@@ -4,14 +4,16 @@ using IssueTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IssueTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200331165110_ticketAttributes")]
+    partial class ticketAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -162,15 +164,6 @@ namespace IssueTracker.Data.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TicketPriorityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TicketStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TicketTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -184,58 +177,7 @@ namespace IssueTracker.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("TicketPriorityId");
-
-                    b.HasIndex("TicketStatusId");
-
-                    b.HasIndex("TicketTypeId");
-
                     b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("IssueTracker.Models.TicketPriority", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TicketPriorities");
-                });
-
-            modelBuilder.Entity("IssueTracker.Models.TicketStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TicketStatuses");
-                });
-
-            modelBuilder.Entity("IssueTracker.Models.TicketType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TicketTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -393,18 +335,6 @@ namespace IssueTracker.Data.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("IssueTracker.Models.TicketPriority", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("TicketPriorityId");
-
-                    b.HasOne("IssueTracker.Models.TicketStatus", "TicketStatus")
-                        .WithMany("Tickets")
-                        .HasForeignKey("TicketStatusId");
-
-                    b.HasOne("IssueTracker.Models.TicketType", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("TicketTypeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
