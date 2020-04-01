@@ -1,0 +1,17 @@
+﻿@model IssueTracker.Models.TicketPriority
+
+@{
+    ViewData["Title"] = "Create Priority";
+}
+
+<h1 class="bg-info text-white">Create Priority</h1>
+<a asp-action="Index" class="btn btn-primary">Back</a>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
