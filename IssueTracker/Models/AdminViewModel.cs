@@ -11,6 +11,8 @@ namespace IssueTracker.Models
     {
        public IEnumerable<ApplicationUser> applicationUsers { get; set; }
        public IEnumerable<TicketStatus> ticketStatuses { get; set; }
+       public IEnumerable<TicketType> ticketTypes { get; set; }
+       public IEnumerable<TicketPriority> ticketPriorities { get; set; }
 
     }
 }

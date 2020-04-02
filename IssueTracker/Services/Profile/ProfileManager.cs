@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IssueTracker.Models;
 
 namespace IssueTracker.Services.Profile
 {
@@ -12,15 +13,17 @@ namespace IssueTracker.Services.Profile
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         IHttpContextAccessor _httpContextAccessor;
 
         private ApplicationUser _currentUser;
 
-        public ProfileManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        public ProfileManager(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IHttpContextAccessor httpContextAccessor, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
 
         public ApplicationUser CurrentUser
@@ -52,6 +55,13 @@ namespace IssueTracker.Services.Profile
 
 
             return string.Join(" , ", _userRoles);
+        }
+
+        public async Task<string> CurrentStatus(int id)
+        {
+            var status = await _context.TicketStatuses.FindAsync(id);
+
+            return status.Name;
         }
 
         public bool IsInRole(string role)

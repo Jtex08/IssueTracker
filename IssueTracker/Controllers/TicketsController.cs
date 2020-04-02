@@ -58,7 +58,9 @@ namespace IssueTracker.Controllers
                 return NotFound();
             }
 
-
+            var status = await _context.TicketStatuses
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == ticket.TicketStatusId);
 
             //Ticket Properties
             var ticketDetails = new TicketDetailsViewModel();
@@ -68,6 +70,7 @@ namespace IssueTracker.Controllers
             ticketDetails.Updated = ticket.Updated;
             ticketDetails.Description = ticket.Description;
             ticketDetails.PercentComplete = ticket.PercentComplete;
+            ticketDetails.TicketStatus = status.Name;
 
             var ownerName = _context.Users.Find(ticket.OwnerUserId);
 
@@ -94,11 +97,13 @@ namespace IssueTracker.Controllers
             var ticketView = new TicketCreateViewModel();
             var userId = _profileManager.CurrentUser.Id;
             var projectList = new List<Project>();
+            var ticketStatus = _context.TicketStatuses.ToList();
 
             var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == userId));
             projectList = projects.ToList();
 
             ticketView.Projects = new SelectList(projectList, "Id", "Title");
+            ticketView.TicketStatus = new SelectList(ticketStatus, "Id", "Name");
 
             return View(ticketView);
         }
@@ -106,7 +111,7 @@ namespace IssueTracker.Controllers
         // POST: Tickets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,SelectedProject")] TicketCreateViewModel ticketView)
+        public async Task<IActionResult> Create([Bind("Title,Description,SelectedProject,SelectedStatus")] TicketCreateViewModel ticketView)
         {
             try
             {
@@ -118,6 +123,7 @@ namespace IssueTracker.Controllers
                     ticket.ProjectId = ticketView.SelectedProject;
                     ticket.OwnerUserId = _profileManager.CurrentUser.Id;
                     ticket.Created = DateTimeOffset.Now;
+                    ticket.TicketStatusId = ticketView.SelectedStatus;
                     _context.Tickets.Add(ticket);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

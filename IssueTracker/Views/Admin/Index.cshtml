@@ -6,17 +6,18 @@
 }
 
 
-
+<h1 class="bg-info text-white">Administration</h1>
 <div class="row">
     <div class="col-lg-12">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_1" data-toggle="tab">Users</a></li>
-                <li><a href="#tab_2" data-toggle="tab">Statuses</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Ticket Statuses</a></li>
+                <li><a href="#tab_3" data-toggle="tab">Ticket Types</a></li>
+                <li><a href="#tab_4" data-toggle="tab">Ticket Priorities</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="tab_1">
-                    <h1 class="bg-info text-white">Administration</h1>
                     <a asp-action="CreateUser" class="btn btn-primary">Create a User</a>
                     <table class="table table-sm table-bordered">
                         <tr><th>ID</th><th>Name</th><th>Email</th><th>Roles</th><th>Delete</th></tr>
@@ -38,9 +39,8 @@
                         }
                     </table>
                 </div>
-
                 <div class="tab-pane" id="tab_2">
-                    <a asp-action="CreateStatus" class="btn btn-primary">Create a Status</a>
+                    <a asp-action="CreateStatus" class="btn btn-primary">Create a Ticket Status</a>
                     <table class="table table-sm table-bordered">
                         <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
                         @foreach (TicketStatus status in Model.ticketStatuses)
@@ -59,7 +59,47 @@
                         }
                     </table>
                 </div>
+                <div class="tab-pane" id="tab_3">
+                    <a asp-action="CreateType" class="btn btn-primary">Create a Ticket Type</a>
+                    <table class="table table-sm table-bordered">
+                        <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
+                        @foreach (TicketType type in Model.ticketTypes)
+                        {
+                            <tr>
+                                <td>@type.Id</td>
+                                <td>@type.Name</td>
+                                <td>
+                                    <form asp-action="DeleteType" asp-route-id="@type.Id" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>            
+                 <div class="tab-pane" id="tab_4">
+                    <a asp-action="CreatePriority" class="btn btn-primary">Create a Ticket Priority</a>
+                    <table class="table table-sm table-bordered">
+                        <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
+                        @foreach (TicketPriority priority in Model.ticketPriorities)
+                         {
+                            <tr>
+                            <td>@priority.Id</td>
+                            <td>@priority.Name</td>
+                            <td>
+                                <form asp-action="DeletePriority" asp-route-id="@priority.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                          }
+                    </table>
             </div>
+          </div>
 
         </div>
     </div>

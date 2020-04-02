@@ -15,6 +15,9 @@ namespace IssueTracker.Models
         //[Display(Name = "Project")]
         public int ProjectId { get; set; }             // Foreign Key - Project the ticket belongs to
 
+        [Display(Name = "Status")]
+        public int TicketStatusId { get; set; }
+
         [Display(Name = "Owner")]
         public string OwnerUserId { get; set; } //Foreign Key-Owner or submitter of ticket
 
@@ -40,7 +43,9 @@ namespace IssueTracker.Models
         public bool Archived { get; set; }
 
         // nav properties - Parent
-        public virtual TicketStatus TicketStatus { get; set; }
+        //public virtual TicketStatus TicketStatus { get; set; }
+        //public virtual TicketType TicketType { get; set; }
+        //public virtual TicketPriority TicketPriority { get; set; }
 
 
 

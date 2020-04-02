@@ -28,8 +28,8 @@ namespace IssueTracker.Models
         //public string TicketType { get; set; }
         //[Display(Name = "Priority")]
         //public string TicketPriority { get; set; }
-        //[Display(Name = "Status")]
-        //public string TicketStatus { get; set; }
+        [Display(Name = "Status")]
+        public string TicketStatus { get; set; }
 
         [Display(Name = "Owner")]
         public string OwnerName { get; set; }

@@ -21,15 +21,24 @@ namespace IssueTracker.Models
         [Display(Name = "Project")]
         public SelectList Projects { get; set; }
 
-        //[Display(Name = "Type")]
-        //public SelectList TicketTypes { get; set; }
+        [Display(Name = "Type")]
+        public SelectList TicketTypes { get; set; }
 
-        //[Display(Name = "Priority")]
-        //public SelectList TicketPriorities { get; set; }
+        [Display(Name = "Priority")]
+        public SelectList TicketPriorities { get; set; }
         //status isn't editable for creating tickets
+
+        [Display(Name = "Status")]
+        public SelectList TicketStatus { get; set; }
 
         [Required(ErrorMessage = "Please select a project")]
         public int SelectedProject { get; set; }
+
+
+        [Required(ErrorMessage = "Please select a Status")]
+        public int SelectedStatus { get; set; }
+
+
         //[Required(ErrorMessage = "Please select a type")]
         //public int SelectedType { get; set; }
         //[Required(ErrorMessage = "Please select a priority")]
