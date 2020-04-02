@@ -43,21 +43,27 @@
                 <dd>
                     @Html.DisplayFor(model => model.PercentComplete)
                 </dd>
-                @*<dt>
-                    @Html.DisplayNameFor(model => model.Created)
-                </dt>
-                <dd>
-                    @TimeZoneInfo.ConvertTime(Model.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
-                </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.Updated)
+                    @Html.DisplayNameFor(model => model.TicketStatus)
                 </dt>
                 <dd>
-                    @if (Model.Updated != null)
-                    {
-                        @TimeZoneInfo.ConvertTime((DateTimeOffset)Model.Updated, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
-                    }
-                </dd>*@                
+                    @Html.DisplayFor(model => model.TicketStatus)
+                </dd>
+                @*<dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+        <dd>
+            @TimeZoneInfo.ConvertTime(Model.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+        <dd>
+            @if (Model.Updated != null)
+            {
+                @TimeZoneInfo.ConvertTime((DateTimeOffset)Model.Updated, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+            }
+        </dd>*@
                 <dd>
                     <br />
                     @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })

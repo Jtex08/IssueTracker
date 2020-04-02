@@ -34,7 +34,7 @@ namespace IssueTracker.Controllers
         {
             var id = _profileManager.CurrentUser.Id;
             var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == id));
-            return View(await projects.ToListAsync());
+            return View(await projects.ToListAsync().ConfigureAwait(false));
         }
 
         // GET: Projects/Details/5
@@ -48,7 +48,7 @@ namespace IssueTracker.Controllers
             var project = await _context.Projects
                 .Include(p => p.Tickets)                
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
 
             if (project == null)
             {
@@ -85,7 +85,7 @@ namespace IssueTracker.Controllers
                 if (ModelState.IsValid)
                 {
                     _context.Projects.Add(project);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
 
                     ProjectUser projUser = new ProjectUser();
 
@@ -93,7 +93,7 @@ namespace IssueTracker.Controllers
                     projUser.ProjectId = project.Id;
 
                     _context.ProjectUsers.Add(projUser);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -119,7 +119,7 @@ namespace IssueTracker.Controllers
 
             var project = await _context.Projects
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
             if (project == null)
             {
                 return NotFound();
@@ -141,7 +141,7 @@ namespace IssueTracker.Controllers
                 {
                     project.Updated = DateTimeOffset.Now;
                     _context.Update(project);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException /* ex */)
@@ -165,7 +165,7 @@ namespace IssueTracker.Controllers
 
             var project = await _context.Projects
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
             if (project == null)
             {
                 return NotFound();
@@ -195,7 +195,7 @@ namespace IssueTracker.Controllers
             try
             {
                 _context.Projects.Remove(project);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(false);
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException /* ex */)

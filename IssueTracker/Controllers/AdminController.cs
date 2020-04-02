@@ -27,9 +27,13 @@ namespace IssueTracker.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            var adminIndex = new AdminViewModel();
-            adminIndex.applicationUsers = _userManager.Users;
-            adminIndex.ticketStatuses = _context.TicketStatuses;
+            var adminIndex = new AdminViewModel
+            {
+                applicationUsers = _userManager.Users,
+                ticketStatuses = _context.TicketStatuses,
+                ticketPriorities = _context.TicketPriorities,
+                ticketTypes = _context.TicketTypes
+            };
 
 
 
@@ -106,6 +110,60 @@ namespace IssueTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        public ViewResult CreateType() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> CreateType(TicketType ticketType)
+        {
+            var type = new TicketType();
+            type.Name = ticketType.Name;
+
+            _context.TicketTypes.Add(type);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteType(int id)
+        {
+            var status = await _context.TicketTypes.FindAsync(id);
+            _context.TicketTypes.Remove(status);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+
+        public ViewResult CreatePriority() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePriority(TicketPriority ticketPriority)
+        {
+            var priority = new TicketPriority();
+            priority.Name = ticketPriority.Name;
+
+            _context.TicketPriorities.Add(priority);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePriority(int id)
+        {
+            var priority = await _context.TicketPriorities.FindAsync(id);
+            _context.TicketPriorities.Remove(priority);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
 
         private void Errors(IdentityResult result)
         {
