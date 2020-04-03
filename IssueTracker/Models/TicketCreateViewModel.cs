@@ -26,7 +26,7 @@ namespace IssueTracker.Models
 
         [Display(Name = "Priority")]
         public SelectList TicketPriorities { get; set; }
-        //status isn't editable for creating tickets
+
 
         [Display(Name = "Status")]
         public SelectList TicketStatus { get; set; }
@@ -39,9 +39,9 @@ namespace IssueTracker.Models
         public int SelectedStatus { get; set; }
 
 
-        //[Required(ErrorMessage = "Please select a type")]
-        //public int SelectedType { get; set; }
-        //[Required(ErrorMessage = "Please select a priority")]
-        //public int SelectedPriority { get; set; }
+        [Required(ErrorMessage = "Please select a type")]
+        public int SelectedType { get; set; }
+        [Required(ErrorMessage = "Please select a priority")]
+        public int SelectedPriority { get; set; }
     }
 }

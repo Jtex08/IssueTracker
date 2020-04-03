@@ -54,28 +54,51 @@ namespace IssueTracker.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-             .AsNoTracking()
-             .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = _context.Tickets
+                .Include(m => m.TicketPriority)
+                .Include(m => m.TicketStatus)
+                .Include(m => m.TicketType)
+                .Single(m => m.Id == id);
+
+;
+         
+
 
             if (ticket == null)
             {
                 return NotFound();
             }
 
-            var status = await _context.TicketStatuses
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == ticket.TicketStatusId);
+
 
             //Ticket Properties
-            var ticketDetails = new TicketDetailsViewModel();
-            ticketDetails.Id = ticket.Id;
-            ticketDetails.Title = ticket.Title;
-            ticketDetails.Created = ticket.Created;
-            ticketDetails.Updated = ticket.Updated;
-            ticketDetails.Description = ticket.Description;
-            ticketDetails.PercentComplete = ticket.PercentComplete;
-            ticketDetails.TicketStatus = status.Name;
+            var ticketDetails = new TicketDetailsViewModel
+            {
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Created = ticket.Created,
+                Updated = ticket.Updated,
+                Description = ticket.Description,
+                PercentComplete = ticket.PercentComplete
+            
+            };
+
+            //ticketDetails.TicketStatus = status.Name;
+            if (ticket.TicketStatusId != null)
+            {
+                ticketDetails.TicketStatus = ticket.TicketStatus.Name;
+            }
+
+            if (ticket.TicketPriorityId != null)
+            {
+                ticketDetails.TicketPriority = ticket.TicketPriority.Name;
+            }
+
+
+            if (ticket.TicketTypeId != null)
+            {
+                ticketDetails.TicketType = ticket.TicketType.Name;
+            }
 
             var ownerName = _context.Users.Find(ticket.OwnerUserId);
 
@@ -101,14 +124,21 @@ namespace IssueTracker.Controllers
         {
             var ticketView = new TicketCreateViewModel();
             var userId = _profileManager.CurrentUser.Id;
-            var projectList = new List<Project>();
+            //var projectList = new List<Project>();
             var ticketStatus = _context.TicketStatuses.ToList();
 
-            var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == userId));
-            projectList = projects.ToList();
+            var ticketPriority = _context.TicketPriorities.ToList();
+
+            var ticketType = _context.TicketTypes.ToList();
+
+            var projectList = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == userId)).ToList();
+            //var projectList = projects.ToList();
+
 
             ticketView.Projects = new SelectList(projectList, "Id", "Title");
             ticketView.TicketStatus = new SelectList(ticketStatus, "Id", "Name");
+            ticketView.TicketTypes = new SelectList(ticketType, "Id", "Name");
+            ticketView.TicketPriorities = new SelectList(ticketPriority, "Id", "Name");
 
             return View(ticketView);
         }
@@ -116,7 +146,7 @@ namespace IssueTracker.Controllers
         // POST: Tickets/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,SelectedProject,SelectedStatus")] TicketCreateViewModel ticketView)
+        public async Task<IActionResult> Create([Bind("Title,Description,SelectedProject,SelectedStatus,SelectedPriority,SelectedType")] TicketCreateViewModel ticketView)
         {
             try
             {
@@ -129,7 +159,11 @@ namespace IssueTracker.Controllers
                     ticket.OwnerUserId = _profileManager.CurrentUser.Id;
                     ticket.Created = DateTimeOffset.Now;
                     ticket.TicketStatusId = ticketView.SelectedStatus;
+                    ticket.TicketPriorityId = ticketView.SelectedPriority;
+                    ticket.TicketTypeId = ticketView.SelectedType;
+
                     _context.Tickets.Add(ticket);
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -156,13 +190,23 @@ namespace IssueTracker.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = _context.Tickets
+                .Include(m => m.TicketPriority)
+                .Include(m => m.TicketStatus)
+                .Include(m => m.TicketType)
+                .Single(m => m.Id == id);
+
+
             if (ticket == null)
             {
                 return NotFound();
             }
+
+            var ticketStatus = _context.TicketStatuses.ToList();
+
+            var ticketPriority = _context.TicketPriorities.ToList();
+
+            var ticketType = _context.TicketTypes.ToList();
 
             //Ticket Properties
             var ticketEdit = new TicketEditViewModel();
@@ -173,6 +217,9 @@ namespace IssueTracker.Controllers
             ticketEdit.Description = ticket.Description;
             ticketEdit.PercentComplete = ticket.PercentComplete;
             ticketEdit.OwnerUserId = ticket.OwnerUserId;
+            //ticketEdit.SelectedType = ticket.TicketType.Id;
+            
+            
 
             //Project Properties
             var project = await _context.Projects

@@ -24,12 +24,13 @@ namespace IssueTracker.Models
         [Display(Name = "% Complete")]
         public int PercentComplete { get; set; }       // Percent Complete
 
-        //[Display(Name = "Type")]
-        //public string TicketType { get; set; }
-        //[Display(Name = "Priority")]
-        //public string TicketPriority { get; set; }
+        [Display(Name = "Type")]
+        public string? TicketType { get; set; }
+        [Display(Name = "Priority")]
+        public string? TicketPriority { get; set; }
+
         [Display(Name = "Status")]
-        public string TicketStatus { get; set; }
+        public string? TicketStatus { get; set; }
 
         [Display(Name = "Owner")]
         public string OwnerName { get; set; }

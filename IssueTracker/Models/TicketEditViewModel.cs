@@ -32,20 +32,22 @@ namespace IssueTracker.Models
         //[Display(Name = "Assigned to")]
         //public string AssignedToUserName { get; set; }
 
-        ////pass SelectLists in for dropdown menus
-        ////project isn't editable so isn't included as a SelectList
-        //[Display(Name = "Type")]
-        //public SelectList TicketTypes { get; set; }
-        //[Display(Name = "Priority")]
-        //public SelectList TicketPriorities { get; set; }
-        //[Display(Name = "Status")]
-        //public SelectList TicketStatuses { get; set; }
+        //pass SelectLists in for dropdown menus
+        //project isn't editable so isn't included as a SelectList
+        [Display(Name = "Type")]
+        public SelectList TicketTypes { get; set; }
+        [Display(Name = "Priority")]
+        public SelectList TicketPriorities { get; set; }
+        [Display(Name = "Status")]
+        public SelectList TicketStatuses { get; set; }
 
-        //[Required(ErrorMessage = "Please select a type")]
-        //public int SelectedType { get; set; }
-        //[Required(ErrorMessage = "Please select a priority")]
-        //public int SelectedPriority { get; set; }
-        //[Required(ErrorMessage = "Please select a status")]
-        //public int SelectedStatus { get; set; }
+        [Required(ErrorMessage = "Please select a type")]
+        public int SelectedType { get; set; }
+
+        [Required(ErrorMessage = "Please select a priority")]
+        public int SelectedPriority { get; set; }
+
+        [Required(ErrorMessage = "Please select a status")]
+        public int SelectedStatus { get; set; }
     }
 }
