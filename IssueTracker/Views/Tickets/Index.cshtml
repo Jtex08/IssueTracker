@@ -24,6 +24,9 @@
             <th>
                 Status
             </th>
+            <th>
+                Priority
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +43,16 @@
                     @Html.DisplayFor(modelItem => item.Created)
                 </td>
                 <td>
-                    @ProfileManager.CurrentStatus(item.TicketStatusId)
+                    @if (item.TicketStatus != null)
+                    {
+                            @item.TicketStatus.Name
+                    }
+                </td>
+                <td>
+                    @if  (item.TicketPriority != null)
+                    {
+                        @item.TicketPriority.Name
+                    }
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -4,14 +4,16 @@ using IssueTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IssueTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200402225040_Tattribs")]
+    partial class Tattribs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,7 +396,7 @@ namespace IssueTracker.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IssueTracker.Models.TicketPriority", "TicketPriority")
+                    b.HasOne("IssueTracker.Models.TicketPriority", null)
                         .WithMany("Tickets")
                         .HasForeignKey("TicketPriorityId");
 
@@ -402,7 +404,7 @@ namespace IssueTracker.Data.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("TicketStatusId");
 
-                    b.HasOne("IssueTracker.Models.TicketType", "TicketType")
+                    b.HasOne("IssueTracker.Models.TicketType", null)
                         .WithMany("Tickets")
                         .HasForeignKey("TicketTypeId");
                 });

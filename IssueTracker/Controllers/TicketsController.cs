@@ -35,7 +35,12 @@ namespace IssueTracker.Controllers
         {
             
             var id = _profileManager.CurrentUser.Id;
-            var tickets = _context.Tickets.Where(x => x.OwnerUserId == id);
+            var tickets = _context.Tickets
+                .Where(t => t.OwnerUserId == id)
+                .Include(t => t.TicketStatus)
+                .Include(t => t.TicketPriority)
+                .AsNoTracking();
+
             return View(await tickets.ToListAsync());
 
             //return View(await _context.Tickets.ToListAsync());

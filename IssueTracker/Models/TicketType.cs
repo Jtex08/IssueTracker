@@ -11,10 +11,7 @@ namespace IssueTracker.Models
         public string Name { get; set; }
 
         // nav
-        public virtual ICollection<Ticket> Tickets { get; set; }
-        public TicketType()
-        {
-            Tickets = new HashSet<Ticket>();
-        }
+        public ICollection<Ticket> Tickets { get; set; }
+
     }
 }
