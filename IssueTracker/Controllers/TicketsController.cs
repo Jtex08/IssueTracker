@@ -207,9 +207,43 @@ namespace IssueTracker.Controllers
             var ticketPriority = _context.TicketPriorities.ToList();
 
             var ticketType = _context.TicketTypes.ToList();
+            var ticketEdit = new TicketEditViewModel();
+
+            if (ticket.TicketTypeId == null)
+            {
+                var getId = ticketType
+                    .Single(m => m.Name == "Type Needed");
+                ticketEdit.SelectedType = getId.Id;
+            }
+            else
+            {
+                ticketEdit.SelectedType = ticket.TicketType.Id;
+            }
+
+            if (ticket.TicketStatusId == null)
+            {
+                var getId = ticketStatus
+                    .Single(m => m.Name == "Status Needed");
+                ticketEdit.SelectedStatus = getId.Id;
+            }
+            else
+            {
+                ticketEdit.SelectedStatus = ticket.TicketStatus.Id;
+            }
+
+            if (ticket.TicketPriorityId == null)
+            {
+                var getId = ticketPriority
+                    .Single(m => m.Name == "Priority Needed");
+                ticketEdit.SelectedPriority = getId.Id;
+            }
+            else
+            {
+                ticketEdit.SelectedPriority = ticket.TicketPriority.Id;
+            }
 
             //Ticket Properties
-            var ticketEdit = new TicketEditViewModel();
+
             ticketEdit.Id = ticket.Id;
             ticketEdit.Title = ticket.Title;
             ticketEdit.Created = ticket.Created;
@@ -217,9 +251,17 @@ namespace IssueTracker.Controllers
             ticketEdit.Description = ticket.Description;
             ticketEdit.PercentComplete = ticket.PercentComplete;
             ticketEdit.OwnerUserId = ticket.OwnerUserId;
-            //ticketEdit.SelectedType = ticket.TicketType.Id;
-            
-            
+
+
+
+
+
+
+            ticketEdit.TicketTypes = new SelectList(ticketType, "Id", "Name", ticketEdit.SelectedType);
+            ticketEdit.TicketStatuses = new SelectList(ticketStatus, "Id", "Name", ticketEdit.SelectedStatus);
+            ticketEdit.TicketPriorities = new SelectList(ticketPriority, "Id", "Name", ticketEdit.SelectedPriority);
+
+
 
             //Project Properties
             var project = await _context.Projects
@@ -234,7 +276,7 @@ namespace IssueTracker.Controllers
         // POST: Tickets/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Title,Description,Created,Updated,PercentComplete,")] TicketEditViewModel ticketEdit)
+        public async Task<IActionResult> Edit([Bind("Id,Title,Description,Created,Updated,PercentComplete,SelectedStatus,SelectedPriority,SelectedType")] TicketEditViewModel ticketEdit)
         {
             if(ModelState.IsValid)
             {
@@ -248,6 +290,9 @@ namespace IssueTracker.Controllers
                     ticket.Created = ticketEdit.Created;
                     ticket.Updated = DateTimeOffset.Now;
                     ticket.PercentComplete = ticketEdit.PercentComplete;
+                    ticket.TicketStatusId = ticketEdit.SelectedStatus;
+                    ticket.TicketPriorityId = ticketEdit.SelectedPriority;
+                    ticket.TicketTypeId = ticketEdit.SelectedType;
 
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
