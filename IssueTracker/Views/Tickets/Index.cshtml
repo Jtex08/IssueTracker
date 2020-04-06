@@ -5,7 +5,18 @@
 }
 
 
+<section class="content-header">
+    <h1>
+        Ticket
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Tickets</a></li>
+        <li class="active">Index</li>
+    </ol>
+</section>
 
+<hr />
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Ticket</a>
 </p>
@@ -20,7 +31,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-sm table-bordered">
+                    <table id="tickets" class="table table-sm table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th>
@@ -37,6 +48,9 @@
                                 </th>
                                 <th>
                                     Priority
+                                </th>
+                                <th>
+
                                 </th>
                             </tr>
                         </thead>
@@ -74,8 +88,37 @@
                             }
                         </tbody>
                     </table>
-                 </div>
+                </div>
             </div>
         </div>
-    </div>    
+    </div>
 </section>
+
+@section Styles {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/libs/datatables/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/libs/bootstrap/css/bootstrap.min.css" />
+}
+
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/libs/datatables/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tickets').DataTable({
+                'searching': true,
+                'ordering': true,
+                'columnDefs': [{
+                    'searchable': false,
+                    'orderable': false,
+                    'targets': 5
+                }]
+            });
+        })
+    </script>
+}

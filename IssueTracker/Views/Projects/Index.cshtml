@@ -5,36 +5,21 @@
 
 @inject IssueTracker.Services.Profile.ProfileManager ProfileManager
 
-@section Styles {
-    <!-- DataTables -->
-    <link rel="stylesheet" href="~/libs/datatables/css/dataTables.bootstrap.min.css">
-}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Projects
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Projects</a></li>
+        <li class="active">Index</li>
+    </ol>
+</section>
 
-@section Scripts {
-    <!-- DataTables -->
-    <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="~/libs/datatables/js/dataTables.bootstrap.min.js"></script>
-
-    <!-- page script -->
-    <script>
-        $(function () {
-
-            $('#projects').DataTable({
-                'paging': true,
-                'lengthChange': false,
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false
-            })
-        })
-    </script>
-}
-
-<h2>Index</h2>
-
+<br />
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary"> Create New</a>
 </p>
 <!-- Main content -->
 <section class="content">
@@ -46,7 +31,8 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table id="projects" class="table table-bordered table-hover">
+
+                    <table id="proj" class="table table-bordered table-hover" style="width:100%">
                         <thead>
                             <tr>
                                 <th>
@@ -57,6 +43,9 @@
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Created)
+                                </th>
+                                <th>
+
                                 </th>
                             </tr>
                         </thead>
@@ -82,9 +71,44 @@
                             }
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- /.content -->
+
+
+@section Styles {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/libs/datatables/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/libs/bootstrap/css/bootstrap.min.css" />
+}
+
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/libs/datatables/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#proj').DataTable({
+                'searching': false,
+                'ordering': true,
+                'columnDefs': [{
+                    'searchable': false,
+                    'orderable': false,
+                    'targets': 3
+                }]
+            });
+ 
+        })
+    </script>
+}
+
+
+
+

@@ -5,8 +5,19 @@
     ViewData["Title"] = "Index";
 }
 
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Administration
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Admin</a></li>
+        <li class="active">Index</li>
+    </ol>
+</section>
 
-<h1 class="bg-info text-white">Administration</h1>
+
 <section class="content">
     <div class="box-primary">
         <div class="row">
@@ -21,84 +32,104 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_1">
                             <a asp-action="CreateUser" class="btn btn-primary">Create a User</a>
-                            <table class="table table-sm table-bordered">
-                                <tr><th>ID</th><th>Name</th><th>Email</th><th>Roles</th><th>Delete</th></tr>
-                                @foreach (ApplicationUser user in Model.applicationUsers)
-                                {
-                                    <tr>
-                                        <td>@user.Id</td>
-                                        <td>@user.UserName</td>
-                                        <td>@user.Email</td>
-                                        <td>@ProfileManager.UserRoles(user)</td>
-                                        <td>
-                                            <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
+                            <br />
+                            <table id="users" class="table table-bordered table-hover" style="width:100%">
+                                <thead>
+                                    <tr><th>ID</th><th>Name</th><th>Email</th><th>Roles</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (ApplicationUser user in Model.applicationUsers)
+                                    {
+                                        <tr>
+                                            <td>@user.Id</td>
+                                            <td>@user.UserName</td>
+                                            <td>@user.Email</td>
+                                            <td>@ProfileManager.UserRoles(user)</td>
+                                            <td>
+                                                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="tab_2">
                             <a asp-action="CreateStatus" class="btn btn-primary">Create a Ticket Status</a>
-                            <table class="table table-sm table-bordered">
-                                <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
-                                @foreach (TicketStatus status in Model.ticketStatuses)
-                                {
-                                    <tr>
-                                        <td>@status.Id</td>
-                                        <td>@status.Name</td>
-                                        <td>
-                                            <form asp-action="DeleteStatus" asp-route-id="@status.Id" method="post">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
+                            <br />
+                            <table id="status" class="table table-sm table-bordered">
+                                <thead>
+                                    <tr><th>ID</th><th>Name</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (TicketStatus status in Model.ticketStatuses)
+                                    {
+                                        <tr>
+                                            <td>@status.Id</td>
+                                            <td>@status.Name</td>
+                                            <td>
+                                                <form asp-action="DeleteStatus" asp-route-id="@status.Id" method="post">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="tab_3">
                             <a asp-action="CreateType" class="btn btn-primary">Create a Ticket Type</a>
-                            <table class="table table-sm table-bordered">
-                                <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
-                                @foreach (TicketType type in Model.ticketTypes)
-                                {
-                                    <tr>
-                                        <td>@type.Id</td>
-                                        <td>@type.Name</td>
-                                        <td>
-                                            <form asp-action="DeleteType" asp-route-id="@type.Id" method="post">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
+                            <br />
+                            <table id="type" class="table table-sm table-bordered">
+                                <thead>
+                                    <tr><th>ID</th><th>Name</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (TicketType type in Model.ticketTypes)
+                                    {
+                                        <tr>
+                                            <td>@type.Id</td>
+                                            <td>@type.Name</td>
+                                            <td>
+                                                <form asp-action="DeleteType" asp-route-id="@type.Id" method="post">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="tab_4">
                             <a asp-action="CreatePriority" class="btn btn-primary">Create a Ticket Priority</a>
-                            <table class="table table-sm table-bordered">
-                                <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
-                                @foreach (TicketPriority priority in Model.ticketPriorities)
-                                {
-                                    <tr>
-                                        <td>@priority.Id</td>
-                                        <td>@priority.Name</td>
-                                        <td>
-                                            <form asp-action="DeletePriority" asp-route-id="@priority.Id" method="post">
-                                                <button type="submit" class="btn btn-sm btn-danger">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                }
+                            <br />
+                            <table id="priority" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr><th>ID</th><th>Name</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (TicketPriority priority in Model.ticketPriorities)
+                                    {
+                                        <tr>
+                                            <td>@priority.Id</td>
+                                            <td>@priority.Name</td>
+                                            <td>
+                                                <form asp-action="DeletePriority" asp-route-id="@priority.Id" method="post">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -106,5 +137,46 @@
                 </div>
             </div>
         </div>
-    </div>>
+    </div>
 </section>
+
+@section Styles {
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/libs/datatables/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/libs/bootstrap/css/bootstrap.min.css" />
+}
+
+
+@section Scripts {
+    <!-- DataTables -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/libs/datatables/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- page script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#priority').DataTable({
+                'searching': false,
+                'ordering': false
+            });
+            $('#status').DataTable({
+                'searching': false,
+                'ordering': false
+            });
+            $('#type').DataTable({
+                'searching': false,
+                'ordering': false
+            });
+            $('#users').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                'scrollX': true
+            });
+        })
+    </script>
+}

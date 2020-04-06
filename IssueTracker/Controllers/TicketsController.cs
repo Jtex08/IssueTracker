@@ -31,7 +31,7 @@ namespace IssueTracker.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             
             var id = _profileManager.CurrentUser.Id;
@@ -41,7 +41,7 @@ namespace IssueTracker.Controllers
                 .Include(t => t.TicketPriority)
                 .AsNoTracking();
 
-            return View(await tickets.ToListAsync());
+            return View(tickets.ToList());
 
             //return View(await _context.Tickets.ToListAsync());
         }

@@ -4,8 +4,20 @@
     ViewData["Title"] = "Create Ticket Type";
 }
 
-<h1 class="bg-info text-white">Create Ticket Type</h1>
-<a asp-action="Index" class="btn btn-primary">Back</a>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Create Ticket Type
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Admin">Admin</a></li>
+        <li class="active">Create Ticket Type</li>
+    </ol>
+</section>
+<p>
+    <a asp-action="Index" class="btn btn-primary">Back</a>
+</p>
 <div asp-validation-summary="All" class="text-danger"></div>
 
 <form method="post">

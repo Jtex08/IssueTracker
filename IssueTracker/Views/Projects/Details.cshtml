@@ -4,59 +4,82 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+    <section class="content-header">
+        <h1>
+            Project Details
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="/Projects">Projects</a></li>
+            <li class="active">Details</li>
+        </ol>
+    </section>
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Tickets)
-        </dt>
-        <dd class="col-sm-10">
-            <table class="table">
-                <tr>
-                    <th>Ticket</th>
-                    <th>Description</th>
-                    <th>Created On</th>
-                </tr>
-                @foreach (var item in Model.Tickets)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Created)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<hr />
+
+
+<section class="content">
+    <div class="box-primary">
+        <h4>Project</h4>
+        <hr />
+        <div class="row">
+            <div class="col-lg-6">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Created)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Created)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Tickets)
+                    </dt>
+                    <dd>
+                        <br />
+                        <table class="table table-sm table-bordered" >
+                            <tr>
+                                <th>Ticket</th>
+                                <th>Description</th>
+                                <th>Created On</th>
+                                <th></th>
+                            </tr>
+                            @foreach (var item in Model.Tickets)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Created)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</section>

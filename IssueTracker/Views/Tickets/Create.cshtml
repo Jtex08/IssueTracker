@@ -4,8 +4,18 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create Ticket</h2>
+<section class="content-header">
+    <h1>
+        Create Ticket
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Tickets">Tickets</a></li>
+        <li class="active">Create</li>
+    </ol>
+</section>
 
+<hr />
 
 <section class="content">
     <div class="box-primary">
@@ -74,5 +84,5 @@
         <div>
             @Html.ActionLink("Back to Tickets", "Index")
         </div>
-     </div>
+    </div>
 </section>
