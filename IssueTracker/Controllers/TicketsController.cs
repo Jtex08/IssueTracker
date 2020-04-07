@@ -41,7 +41,7 @@ namespace IssueTracker.Controllers
                 .Include(t => t.TicketPriority)
                 .AsNoTracking();
 
-            return View(await tickets.ToListAsync());
+            return View(await tickets.ToListAsync().ConfigureAwait(false));
 
             //return View(await _context.Tickets.ToListAsync());
         }
@@ -58,6 +58,7 @@ namespace IssueTracker.Controllers
                 .Include(m => m.TicketPriority)
                 .Include(m => m.TicketStatus)
                 .Include(m => m.TicketType)
+                .Include(m => m.TicketComments)
                 .Single(m => m.Id == id);
 
 ;
@@ -79,7 +80,8 @@ namespace IssueTracker.Controllers
                 Created = ticket.Created,
                 Updated = ticket.Updated,
                 Description = ticket.Description,
-                PercentComplete = ticket.PercentComplete
+                PercentComplete = ticket.PercentComplete,
+                TicketComments = ticket.TicketComments
             
             };
 
@@ -109,7 +111,7 @@ namespace IssueTracker.Controllers
             //Project Properties
             var project = await _context.Projects
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId);
+                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId).ConfigureAwait(false);
 
             ticketDetails.ProjectTitle = project.Title;
 
@@ -164,7 +166,7 @@ namespace IssueTracker.Controllers
 
                     _context.Tickets.Add(ticket);
 
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -266,7 +268,7 @@ namespace IssueTracker.Controllers
             //Project Properties
             var project = await _context.Projects
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId);
+                .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId).ConfigureAwait(false);
 
             ticketEdit.ProjectTitle = project.Title;
 
@@ -283,7 +285,7 @@ namespace IssueTracker.Controllers
                 try
                 {
                     var ticket = await _context.Tickets
-                        .FirstOrDefaultAsync(m => m.Id == ticketEdit.Id);
+                        .FirstOrDefaultAsync(m => m.Id == ticketEdit.Id).ConfigureAwait(false);
 
                     ticket.Title = ticketEdit.Title;
                     ticket.Description = ticketEdit.Description;
@@ -295,7 +297,7 @@ namespace IssueTracker.Controllers
                     ticket.TicketTypeId = ticketEdit.SelectedType;
 
                     _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -310,6 +312,75 @@ namespace IssueTracker.Controllers
 
             return View(ticketEdit);
    
+        }
+
+        //Get: Tickets/CreateComment/5
+        public ActionResult CreateComment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = _context.Tickets.Single(m => m.Id == id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+
+
+
+
+            var ticketComment = new TicketComment
+            {
+                TicketId = ticket.Id,
+
+            };
+
+
+
+
+            return View(ticketComment);
+        }
+
+        //Post: Tickets/CreateComment/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateComment([Bind("TicketId,Comment")]TicketComment ticketComment)
+        {
+
+
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+
+                    ticketComment.Created = DateTimeOffset.Now;
+
+                    ticketComment.UserId = _profileManager.CurrentUser.Id;
+
+                    _context.TicketComments.Add(ticketComment);
+
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+
+                    return RedirectToAction("Details", "Tickets", new { id = ticketComment.TicketId });
+
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+            }
+
+
+            return View(ticketComment);
         }
 
         // GET: Tickets/Delete/5

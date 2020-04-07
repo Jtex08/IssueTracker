@@ -36,5 +36,7 @@ namespace IssueTracker.Models
         public string OwnerName { get; set; }
         [Display(Name = "Assigned To")]
         public string AssignedToUserName { get; set; }
+
+        public ICollection<TicketComment> TicketComments { get; set; }
     }
 }

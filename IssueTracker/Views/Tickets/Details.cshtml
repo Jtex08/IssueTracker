@@ -1,12 +1,14 @@
 ﻿@model IssueTracker.Models.TicketDetailsViewModel
 
+@inject IssueTracker.Services.Profile.ProfileManager ProfileManager
+
 @{
     ViewData["Title"] = "Details";
 }
 
 <section class="content-header">
     <h1>
-         Ticket Details
+        Ticket Details
     </h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -29,7 +31,7 @@
                     <dd>
                         @Html.DisplayFor(model => model.Title)
                     </dd>
-                    
+
                     <dt>
                         @Html.DisplayNameFor(model => model.Description)
                     </dt>
@@ -98,4 +100,41 @@
 
         </div>
     </div>
+
+    <div class="box-comments">
+        <h4>Comments</h4>
+        <br />
+        @if (Model.TicketComments != null)
+        {
+            foreach (TicketComment ticketComment in Model.TicketComments)
+            {
+                <p>
+                    @ticketComment.Comment
+                </p>
+                if (!string.IsNullOrEmpty(ticketComment.UserId))
+                {
+                    var userName = await ProfileManager.UserName(ticketComment.UserId);
+                    <b>
+                        @userName
+                    </b>
+                }
+                <br />
+                <b>
+                    @TimeZoneInfo.ConvertTime(ticketComment.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+                </b>
+                <br />
+            }
+        }
+        else
+        {
+            <b>
+                No Comments
+            </b>
+            <br />
+        }
+        <hr />
+        @Html.ActionLink("Add Comment", "CreateComment", "Tickets", new { id = Model.Id }, new { @class = "btn btn-default" })
+    </div>
 </section>
+
+

@@ -57,6 +57,14 @@ namespace IssueTracker.Services.Profile
             return string.Join(" , ", _userRoles);
         }
 
+        public async Task<string> UserName(string id)
+        {
+
+            var userName = await _context.Users.FindAsync(id);
+
+            return userName.UserName;
+        }
+
         public async Task<string> CurrentStatus(int id)
         {
             var status = await _context.TicketStatuses.FindAsync(id);

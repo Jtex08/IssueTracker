@@ -19,6 +19,7 @@ namespace IssueTracker.Data
     {
         public virtual ICollection<Ticket> Tickets { get; set; }
         public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
+        public ICollection<TicketComment> TicketComments { get; set; }
 
         public ApplicationUser()
         {

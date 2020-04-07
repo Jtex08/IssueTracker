@@ -53,6 +53,7 @@ namespace IssueTracker.Models
         public TicketType TicketType { get; set; }
         public TicketPriority TicketPriority { get; set; }
 
+        public ICollection<TicketComment> TicketComments { get; set; }
 
 
         //nav-parent

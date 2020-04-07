@@ -26,6 +26,7 @@ namespace IssueTracker.Data
 
         public DbSet<TicketPriority> TicketPriorities { get; set; }
 
+        public DbSet<TicketComment> TicketComments { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
