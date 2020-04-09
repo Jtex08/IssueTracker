@@ -105,33 +105,41 @@
     <div class="box-comments">
         <h4>Comments</h4>
         <br />
-        @if(Model.TicketComments != null)
+        @if (Model.TicketComments != null)
         {
-            @foreach(TicketComment ticketComment in Model.TicketComments)
+            @foreach (TicketComment ticketComment in Model.TicketComments)
             {
                 <p>
                     @ticketComment.Comment
                 </p>
-                @if(!string.IsNullOrEmpty(ticketComment.UserId))
+                @if (!string.IsNullOrEmpty(ticketComment.UserId))
                 {
                     var userName = await ProfileManager.UserName(ticketComment.UserId);
                     <b>
                         @userName
                     </b>
+                    <br />
+                    TimeZoneInfo tz;
+                    @if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo("Central Standard Time", out tz) == true)
+                    {
+                        <b>
+                             @TimeZoneInfo.ConvertTime(ticketComment.Created, tz).ToString("M/d/yy h:mm tt")
+                        </b>
+                    }
+
                 }
                 <br />
-                <b>
-                    @if (TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time") != null)
+                @*<b>
+
+                    @if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo("Central Standard Time") == true)
                     {
-                        @TimeZoneInfo.ConvertTime(ticketComment.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+
                     }
-                    else
-                    {
-                        var tz = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time");
-                        @TimeZoneInfo.ConvertTime(ticketComment.Created, tz).ToString("M/d/yy h:mm tt")
-                    }
-                </b>
-                
+                    @TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time"));
+                    @TimeZoneInfo.ConvertTime(ticketComment.Created, tz).ToString("M/d/yy h:mm tt")
+
+                </b>*@
+
                 <br />
             }
         }
