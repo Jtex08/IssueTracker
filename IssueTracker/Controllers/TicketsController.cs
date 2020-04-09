@@ -350,7 +350,7 @@ namespace IssueTracker.Controllers
 
             var ticketComment = new TicketComment
             {
-                TicketId = ticket.Id,
+                TicketId = ticket.Id
 
             };
 

@@ -106,12 +106,12 @@
         <br />
         @if (Model.TicketComments != null)
         {
-            foreach (TicketComment ticketComment in Model.TicketComments)
+            @foreach (TicketComment ticketComment in Model.TicketComments)
             {
                 <p>
                     @ticketComment.Comment
                 </p>
-                if (!string.IsNullOrEmpty(ticketComment.UserId))
+                @if (!string.IsNullOrEmpty(ticketComment.UserId))
                 {
                     var userName = await ProfileManager.UserName(ticketComment.UserId);
                     <b>
