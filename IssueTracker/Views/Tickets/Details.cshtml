@@ -104,14 +104,14 @@
     <div class="box-comments">
         <h4>Comments</h4>
         <br />
-        @if (Model.TicketComments != null)
+        @if(Model.TicketComments != null)
         {
-            @foreach (TicketComment ticketComment in Model.TicketComments)
+            @foreach(TicketComment ticketComment in Model.TicketComments)
             {
                 <p>
                     @ticketComment.Comment
                 </p>
-                @if (!string.IsNullOrEmpty(ticketComment.UserId))
+                @if(!string.IsNullOrEmpty(ticketComment.UserId))
                 {
                     var userName = await ProfileManager.UserName(ticketComment.UserId);
                     <b>
@@ -133,8 +133,9 @@
             <br />
         }
         <hr />
-        @Html.ActionLink("Add Comment", "CreateComment", "Tickets", new { id = Model.Id }, new { @class = "btn btn-default" })
+
     </div>
+    <a asp-action="CreateComment" asp-route-id="@Model.Id">Add Comment</a> |
 </section>
 
 
