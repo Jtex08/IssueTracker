@@ -36,45 +36,28 @@ namespace IssueTracker.Controllers
 
             var id = _profileManager.CurrentUser.Id;
 
-            var ticks = await _context.ProjectUsers
-                .Where(p => p.UserId == id)
-                .Include(p => p.Project)
-                .ThenInclude(t => t.Tickets)
-                .ToListAsync().ConfigureAwait(false);
+            var projectUsers = _context.ProjectUsers
+                .Where(p => p.UserId == id);
 
-            //var projs = ticks.ToList();
-            var tickout = new List<Ticket>();
+            var ticketOut = new List<Ticket>();
 
-            foreach(ProjectUser projectUser in ticks)
+            foreach(var item in projectUsers)
             {
-                var newticks = await _context.Tickets.Where(t => t.ProjectId == projectUser.ProjectId)
+                var ticketList = await _context.Tickets.Where(t => t.ProjectId == item.ProjectId)
                     .Include(t => t.TicketStatus)
-                    .Include(t => t.TicketPriority);
-                    
+                    .Include(t => t.TicketPriority)
+                    .ToListAsync().ConfigureAwait(false);
 
-
-                //foreach(var d in item.Project.Tickets)
-                //{
-                    
-                //    d.TicketPriority
-                //}
-                var list = item.Project.Tickets;
-
-
-                var toAdd = list.ToList();
-                tickout.AddRange(toAdd);
+                ticketOut.AddRange(ticketList);
             }
 
-            var nt = 
-            //var tickets = _context.Tickets
-            //    .Where(t => t.OwnerUserId == id)
-            //    .Include(t => t.TicketStatus)
-            //    .Include(t => t.TicketPriority)
-            //    .AsNoTracking();
 
-            return View(tickout);
 
-            //return View(await _context.Tickets.ToListAsync());
+
+
+            return View(ticketOut);
+
+
         }
 
         // GET: Tickets/Details/5
