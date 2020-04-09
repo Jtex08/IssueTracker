@@ -48,7 +48,7 @@ namespace IssueTracker.Models
         [Display(Name = "Archived")]
         public bool Archived { get; set; }
 
-        // nav properties - Parent
+        // nav properties 
         public TicketStatus TicketStatus { get; set; }
         public TicketType TicketType { get; set; }
         public TicketPriority TicketPriority { get; set; }
@@ -57,7 +57,7 @@ namespace IssueTracker.Models
 
 
         //nav-parent
-        //public virtual ApplicationUser OwnerUser { get; set; }
+        public virtual ApplicationUser OwnerUser { get; set; }
         //public virtual Project Project { get; set; }
 
 

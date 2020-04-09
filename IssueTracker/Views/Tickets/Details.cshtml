@@ -43,7 +43,7 @@
                         @Html.DisplayNameFor(model => model.ProjectTitle)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.ProjectTitle)
+                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">@Html.DisplayFor(model => model.ProjectTitle)</a>
                     </dd>
 
                     <dt>

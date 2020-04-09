@@ -35,13 +35,44 @@ namespace IssueTracker.Controllers
         {
 
             var id = _profileManager.CurrentUser.Id;
-            var tickets = _context.Tickets
-                .Where(t => t.OwnerUserId == id)
-                .Include(t => t.TicketStatus)
-                .Include(t => t.TicketPriority)
-                .AsNoTracking();
 
-            return View(await tickets.ToListAsync().ConfigureAwait(false));
+            var ticks = await _context.ProjectUsers
+                .Where(p => p.UserId == id)
+                .Include(p => p.Project)
+                .ThenInclude(t => t.Tickets)
+                .ToListAsync().ConfigureAwait(false);
+
+            //var projs = ticks.ToList();
+            var tickout = new List<Ticket>();
+
+            foreach(ProjectUser projectUser in ticks)
+            {
+                var newticks = await _context.Tickets.Where(t => t.ProjectId == projectUser.ProjectId)
+                    .Include(t => t.TicketStatus)
+                    .Include(t => t.TicketPriority);
+                    
+
+
+                //foreach(var d in item.Project.Tickets)
+                //{
+                    
+                //    d.TicketPriority
+                //}
+                var list = item.Project.Tickets;
+
+
+                var toAdd = list.ToList();
+                tickout.AddRange(toAdd);
+            }
+
+            var nt = 
+            //var tickets = _context.Tickets
+            //    .Where(t => t.OwnerUserId == id)
+            //    .Include(t => t.TicketStatus)
+            //    .Include(t => t.TicketPriority)
+            //    .AsNoTracking();
+
+            return View(tickout);
 
             //return View(await _context.Tickets.ToListAsync());
         }
@@ -114,6 +145,7 @@ namespace IssueTracker.Controllers
                 .FirstOrDefaultAsync(m => m.Id == ticket.ProjectId).ConfigureAwait(false);
 
             ticketDetails.ProjectTitle = project.Title;
+            ticketDetails.ProjectId = project.Id;
 
 
             return View(ticketDetails);

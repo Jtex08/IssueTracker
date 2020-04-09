@@ -32,9 +32,24 @@ namespace IssueTracker.Controllers
         // GET: Projects
         public async Task<IActionResult> Index()
         {
+
             var id = _profileManager.CurrentUser.Id;
-            var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == id));
-            return View(await projects.ToListAsync().ConfigureAwait(false));
+            var user = _profileManager.CurrentUser;
+            if (_profileManager.IsInRole("Admin"))
+            {
+                var projects = _context.Projects;
+
+                return View(await projects.ToListAsync().ConfigureAwait(false));
+            }
+            else
+            {
+                var projects = _context.Projects.Where(x => x.ProjectUsers.Any(y => y.UserId == id));
+
+                View(await projects.ToListAsync().ConfigureAwait(false));
+
+            }
+
+            return View();
         }
 
         // GET: Projects/Details/5
@@ -46,7 +61,8 @@ namespace IssueTracker.Controllers
             }
 
             var project = await _context.Projects
-                .Include(p => p.Tickets)                
+                .Include(p => p.Tickets)
+                .Include(p => p.ProjectUsers)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
 
@@ -181,6 +197,76 @@ namespace IssueTracker.Controllers
             return View(project);
         }
 
+        // GET: Projects/UserManagement/5
+        [Authorize(Roles ="Admin, Project Manager")]
+        public async Task<IActionResult> UserManagement(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            List<ApplicationUser> OnProject = new List<ApplicationUser>();
+            List<ApplicationUser> NotOnProject = new List<ApplicationUser>();
+
+            OnProject = UsersOnProject(id);
+
+            NotOnProject = UsersNotOnProject(id);
+
+
+
+            return View(new UserManagementViewModel{
+
+                OnProject = OnProject,
+                NotOnProject = NotOnProject,
+                Project = project
+            
+            });
+        }
+
+        //Post: Projects/UserManagement/5
+        [HttpPost]
+        public async Task<IActionResult> UserManagement(ProjectUserModification model)
+        {
+            var projectUsers = _context.ProjectUsers.Where(p => p.ProjectId == model.ProjectId);
+            var projectUsersList = projectUsers.ToList();
+
+            if (ModelState.IsValid)
+            {
+                foreach (string userId in model.AddIds ?? new string[] { })
+                {
+                    var projectUser = new ProjectUser();
+                    projectUser.ProjectId = model.ProjectId;
+                    projectUser.UserId = userId;
+                    _context.ProjectUsers.Add(projectUser);
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+
+                }
+                foreach (string userId in model.DeleteIds ?? new string[] { })
+                {
+                    var ToBeRemoved = projectUsersList.Where(p => p.UserId == userId).Single();
+
+                    _context.ProjectUsers.Remove(ToBeRemoved);
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                                       
+                }
+            }
+
+
+            return RedirectToAction("Details", "Projects", new { id = model.ProjectId });
+
+
+        }
+
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -203,6 +289,31 @@ namespace IssueTracker.Controllers
                 //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
+        }
+
+        private List<ApplicationUser> UsersOnProject(int? projectId)
+        {
+
+            var queryDb = _context.ProjectUsers
+                .Where(p => p.ProjectId == projectId).Select(p => p.User);
+
+            var usersOnProject= queryDb.ToList();           
+
+            return usersOnProject;
+
+        }
+
+        private List<ApplicationUser> UsersNotOnProject(int? projectId)
+        {
+            var usersOnProject = UsersOnProject(projectId);
+
+            var queryDb = _context.Users;
+
+            var allUsers = queryDb.ToList();
+
+            var usersNotOnProject = allUsers.Except(usersOnProject).ToList();
+
+            return usersNotOnProject;
         }
     }
 }

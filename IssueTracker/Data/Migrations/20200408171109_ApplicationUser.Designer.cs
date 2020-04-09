@@ -4,14 +4,16 @@ using IssueTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IssueTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200408171109_ApplicationUser")]
+    partial class ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,17 +118,20 @@ namespace IssueTracker.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectUsers");
                 });
@@ -396,15 +401,15 @@ namespace IssueTracker.Data.Migrations
 
             modelBuilder.Entity("IssueTracker.Models.ProjectUser", b =>
                 {
-                    b.HasOne("IssueTracker.Models.Project", "Project")
+                    b.HasOne("IssueTracker.Data.ApplicationUser", null)
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("IssueTracker.Models.Project", null)
                         .WithMany("ProjectUsers")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("IssueTracker.Data.ApplicationUser", "User")
-                        .WithMany("ProjectUsers")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("IssueTracker.Models.Ticket", b =>

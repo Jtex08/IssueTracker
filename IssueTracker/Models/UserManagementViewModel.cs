@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using IssueTracker.Data;
 
 namespace IssueTracker.Models
 {
-    public class ProjectUser
+    public class UserManagementViewModel
     {
-        public int Id { get; set; }
-        public int  ProjectId { get; set; }
-        public string UserId { get; set; }
-
         public Project Project { get; set; }
-        public ApplicationUser User { get; set; }
+        public IEnumerable<ApplicationUser> OnProject { get; set; }
+        public IEnumerable<ApplicationUser> NotOnProject { get; set; }
     }
 }

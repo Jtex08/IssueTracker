@@ -4,16 +4,18 @@
     ViewData["Title"] = "Details";
 }
 
-    <section class="content-header">
-        <h1>
-            Project Details
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="/Projects">Projects</a></li>
-            <li class="active">Details</li>
-        </ol>
-    </section>
+@inject IssueTracker.Services.Profile.ProfileManager ProfileManager
+
+<section class="content-header">
+    <h1>
+        Project Details
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="/Projects">Projects</a></li>
+        <li class="active">Details</li>
+    </ol>
+</section>
 
 <hr />
 
@@ -48,7 +50,7 @@
                     </dt>
                     <dd>
                         <br />
-                        <table class="table table-sm table-bordered" >
+                        <table class="table table-sm table-bordered">
                             <tr>
                                 <th>Ticket</th>
                                 <th>Description</th>
@@ -77,9 +79,33 @@
                 </dl>
             </div>
         </div>
+        <hr />
+        <h3>Users Assigned To Project</h3>
+        <ul>
+            @foreach (var item in Model.ProjectUsers)
+            {
+                <li>
+                    @if (!string.IsNullOrEmpty(item.UserId))
+                    {
+                        var userName = await ProfileManager.UserName(item.UserId);
+                        <b>
+                            @userName
+                        </b>
+                        <br />
+                    }
+                </li>
+            }
+        </ul>
+        <br />
+        @if (ProfileManager.IsInRole("Admin"))
+        {
+            <a asp-action="UserManagement" asp-route-id="@Model.Id" class="btn btn-default">Manage Users On Project</a>
+        }
     </div>
+
+    <hr />
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Edit" asp-route-id="@Model.Id" >Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
 </section>
