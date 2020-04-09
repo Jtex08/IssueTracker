@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication;
 using IssueTracker.Services.Profile;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using TimeZoneConverter;
 
 namespace IssueTracker.Controllers
 {
@@ -23,7 +24,7 @@ namespace IssueTracker.Controllers
         private readonly ApplicationDbContext _context;       
         private readonly ProfileManager _profileManager;
 
-
+        
         public TicketsController(ApplicationDbContext context, ProfileManager profileManager)
         {
             _context = context;

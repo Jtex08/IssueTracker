@@ -1,5 +1,6 @@
 ﻿@model IssueTracker.Models.TicketDetailsViewModel
 
+
 @inject IssueTracker.Services.Profile.ProfileManager ProfileManager
 
 @{
@@ -26,7 +27,7 @@
             <div class="col-lg-6">
                 <dl class="dl-horizontal">
                     <dt>
-                        @Html.DisplayNameFor(model => model.Title)
+                        @Html.DisplayNameFor(model => model.Title) 
                     </dt>
                     <dd>
                         @Html.DisplayFor(model => model.Title)
@@ -120,8 +121,17 @@
                 }
                 <br />
                 <b>
-                    @TimeZoneInfo.ConvertTime(ticketComment.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+                    @if (TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time") != null)
+                    {
+                        @TimeZoneInfo.ConvertTime(ticketComment.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+                    }
+                    else
+                    {
+                        var tz = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time");
+                        @TimeZoneInfo.ConvertTime(ticketComment.Created, tz).ToString("M/d/yy h:mm tt")
+                    }
                 </b>
+                
                 <br />
             }
         }
