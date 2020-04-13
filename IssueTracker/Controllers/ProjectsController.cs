@@ -62,6 +62,7 @@ namespace IssueTracker.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.Tickets)
+                .Include(p => p.Tickets).ThenInclude(t => t.TicketPriority)
                 .Include(p => p.ProjectUsers)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);

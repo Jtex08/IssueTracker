@@ -47,6 +47,7 @@ namespace IssueTracker.Controllers
                 var ticketList = await _context.Tickets.Where(t => t.ProjectId == item.ProjectId)
                     .Include(t => t.TicketStatus)
                     .Include(t => t.TicketPriority)
+                    .Include(t => t.Project)
                     .ToListAsync().ConfigureAwait(false);
 
                 ticketOut.AddRange(ticketList);

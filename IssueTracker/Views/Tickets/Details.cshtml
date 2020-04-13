@@ -69,7 +69,24 @@
                         @Html.DisplayNameFor(model => model.TicketPriority)
                     </dt>
                     <dd>
-                        @Html.DisplayFor(model => model.TicketPriority)
+                        @if (Model.TicketPriority != null)
+                        {
+                            @switch (Model.TicketPriority)
+                            {
+                                case "Critical":
+                                    <span class="label label-danger">Critical</span>
+                                    break;
+                                case "HIgh":
+                                    <span class="label label-warning">High</span>
+                                    break;
+                                case "Medium":
+                                    <span class="label label-primary">Medium</span>
+                                    break;
+                                default:
+                                    <span class="label label-default">Low</span>
+                                    break;
+                            }
+                        }
                     </dd>
                     <dt>
                         @Html.DisplayNameFor(model => model.TicketType)
@@ -77,11 +94,11 @@
                     <dd>
                         @Html.DisplayFor(model => model.TicketType)
                     </dd>
-                    @*<dt>
+                    <dt>
                             @Html.DisplayNameFor(model => model.Created)
                         </dt>
                         <dd>
-                            @TimeZoneInfo.ConvertTime(Model.Created, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+                            @TimeZoneInfo.ConvertTime(Model.Created, TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time")).ToString("M/d/yy h:mm tt")
                         </dd>
                         <dt>
                             @Html.DisplayNameFor(model => model.Updated)
@@ -89,9 +106,9 @@
                         <dd>
                             @if (Model.Updated != null)
                             {
-                                @TimeZoneInfo.ConvertTime((DateTimeOffset)Model.Updated, TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time")).ToString("M/d/yy h:mm tt")
+                                @TimeZoneInfo.ConvertTime((DateTimeOffset)Model.Updated, TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time")).ToString("M/d/yy h:mm tt")
                             }
-                        </dd>*@
+                        </dd>
                     <dd>
                         <br />
                         @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
