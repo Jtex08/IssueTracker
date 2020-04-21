@@ -41,7 +41,7 @@ namespace IssueTracker.Pages.Settings
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -49,7 +49,7 @@ namespace IssueTracker.Pages.Settings
             Email = user.Email;
             PhoneNumber = user.PhoneNumber;
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false);
 
             return Page();
         }
@@ -61,12 +61,12 @@ namespace IssueTracker.Pages.Settings
                 return Page();
             }
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null) throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             if (UserName != user.UserName)
             {
-                var setUserNameResult = await _userManager.SetUserNameAsync(user, UserName);
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, UserName).ConfigureAwait(false);
                 if (!setUserNameResult.Succeeded)
                 {
                     TempData["StatusMessage"] = $"Error on changing username." + string.Join(". ", setUserNameResult.Errors.Select(p => p.Description));
@@ -77,7 +77,7 @@ namespace IssueTracker.Pages.Settings
 
             if (Email != user.Email)
             {
-                var setEmailResult = await _userManager.SetEmailAsync(user, Email);
+                var setEmailResult = await _userManager.SetEmailAsync(user, Email).ConfigureAwait(false);
                 if (!setEmailResult.Succeeded)
                 {
                     TempData["StatusMessage"] = $"Error on changing email. '{Email}' use in other account and must be unique.";
@@ -88,7 +88,7 @@ namespace IssueTracker.Pages.Settings
 
             if (PhoneNumber != user.PhoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, PhoneNumber);
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, PhoneNumber).ConfigureAwait(false);
                 if (!setPhoneResult.Succeeded)
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
@@ -107,12 +107,12 @@ namespace IssueTracker.Pages.Settings
                 return Page();
             }
 
-            ApplicationUser user = await _userManager.GetUserAsync(User);
+            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null) throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
             var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            await _emailSender.SendEmailConfirmationAsync(user.Email, callbackUrl);
+            await _emailSender.SendEmailConfirmationAsync(user.Email, callbackUrl).ConfigureAwait(false);
 
             TempData["StatusMessage"] = "Verification email sent. Please check your email.";
 

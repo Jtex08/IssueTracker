@@ -33,7 +33,7 @@ namespace IssueTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
+                IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name)).ConfigureAwait(false);
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -45,10 +45,10 @@ namespace IssueTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(id);
+            IdentityRole role = await _roleManager.FindByIdAsync(id).ConfigureAwait(false);
             if (role != null)
             {
-                IdentityResult result = await _roleManager.DeleteAsync(role);
+                IdentityResult result = await _roleManager.DeleteAsync(role).ConfigureAwait(false);
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -60,12 +60,12 @@ namespace IssueTracker.Controllers
         }
         public async Task<IActionResult> Update(string id)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(id);
+            IdentityRole role = await _roleManager.FindByIdAsync(id).ConfigureAwait(false);
             List<ApplicationUser> members = new List<ApplicationUser>();
             List<ApplicationUser> nonMembers = new List<ApplicationUser>();
             foreach (ApplicationUser user in _userManager.Users)
             {
-                var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                var list = await _userManager.IsInRoleAsync(user, role.Name).ConfigureAwait(false) ? members : nonMembers;
                 list.Add(user);
             }
             return View(new RoleEdit
@@ -84,20 +84,20 @@ namespace IssueTracker.Controllers
             {
                 foreach (string userId in model.AddIds ?? new string[] { })
                 {
-                    ApplicationUser user = await _userManager.FindByIdAsync(userId);
+                    ApplicationUser user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
                     if (user != null)
                     {
-                        result = await _userManager.AddToRoleAsync(user, model.RoleName);
+                        result = await _userManager.AddToRoleAsync(user, model.RoleName).ConfigureAwait(false);
                         if (!result.Succeeded)
                             Errors(result);
                     }
                 }
                 foreach (string userId in model.DeleteIds ?? new string[] { })
                 {
-                    ApplicationUser user = await _userManager.FindByIdAsync(userId);
+                    ApplicationUser user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
                     if (user != null)
                     {
-                        result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
+                        result = await _userManager.RemoveFromRoleAsync(user, model.RoleName).ConfigureAwait(false);
                         if (!result.Succeeded)
                             Errors(result);
                     }
@@ -107,7 +107,7 @@ namespace IssueTracker.Controllers
             if (ModelState.IsValid)
                 return RedirectToAction(nameof(Index));
             else
-                return await Update(model.RoleId);
+                return await Update(model.RoleId).ConfigureAwait(false);
         }
 
         private void Errors(IdentityResult result)

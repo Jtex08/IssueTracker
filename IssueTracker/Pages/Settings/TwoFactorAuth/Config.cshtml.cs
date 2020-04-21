@@ -47,15 +47,15 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            await LoadSharedKeyAndQrCodeUriAsync(user);
+            await LoadSharedKeyAndQrCodeUriAsync(user).ConfigureAwait(false);
             if (string.IsNullOrEmpty(SharedKey))
             {
-                await _userManager.ResetAuthenticatorKeyAsync(user);
-                await LoadSharedKeyAndQrCodeUriAsync(user);
+                await _userManager.ResetAuthenticatorKeyAsync(user).ConfigureAwait(false);
+                await LoadSharedKeyAndQrCodeUriAsync(user).ConfigureAwait(false);
             }
 
             return Page();
@@ -63,13 +63,13 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             if (!ModelState.IsValid)
             {
-                await LoadSharedKeyAndQrCodeUriAsync(user);
+                await LoadSharedKeyAndQrCodeUriAsync(user).ConfigureAwait(false);
                 return Page();
             }
 
@@ -77,19 +77,19 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode).ConfigureAwait(false);
 
             if (!is2faTokenValid)
             {
                 ModelState.AddModelError("Input.Code", "Verification code is invalid.");
-                await LoadSharedKeyAndQrCodeUriAsync(user);
+                await LoadSharedKeyAndQrCodeUriAsync(user).ConfigureAwait(false);
                 return Page();
             }
 
-            await _userManager.SetTwoFactorEnabledAsync(user, true);
+            await _userManager.SetTwoFactorEnabledAsync(user, true).ConfigureAwait(false);
             _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", user.Id);
 
-            var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+            var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10).ConfigureAwait(false);
             TempData["RecoveryCodes"] = recoveryCodes.ToArray();
 
             return RedirectToPage("./RecoveryCodes");
@@ -98,7 +98,7 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
         private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user).ConfigureAwait(false);
             if (!string.IsNullOrEmpty(unformattedKey))
             {
                 SharedKey = FormatKey(unformattedKey);

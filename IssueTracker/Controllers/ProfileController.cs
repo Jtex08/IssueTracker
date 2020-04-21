@@ -88,7 +88,7 @@ namespace IssueTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(CurrentUser, model.OldPassword, model.NewPassword);
+            var changePasswordResult = await _userManager.ChangePasswordAsync(CurrentUser, model.OldPassword, model.NewPassword).ConfigureAwait(false);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
@@ -98,7 +98,7 @@ namespace IssueTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _signInManager.SignInAsync(CurrentUser, isPersistent: false);
+            await _signInManager.SignInAsync(CurrentUser, isPersistent: false).ConfigureAwait(false);
             _logger.LogInformation("User changed their password successfully.");
 
             return Ok("Your password has been changed.");
@@ -127,7 +127,7 @@ namespace IssueTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            var addPasswordResult = await _userManager.AddPasswordAsync(CurrentUser, model.NewPassword);
+            var addPasswordResult = await _userManager.AddPasswordAsync(CurrentUser, model.NewPassword).ConfigureAwait(false);
             if (!addPasswordResult.Succeeded)
             {
                 foreach (var error in addPasswordResult.Errors)
@@ -137,7 +137,7 @@ namespace IssueTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _signInManager.SignInAsync(CurrentUser, isPersistent: false);
+            await _signInManager.SignInAsync(CurrentUser, isPersistent: false).ConfigureAwait(false);
             _logger.LogInformation("User set password successfully.");
 
             return Ok("Your password has been set.");

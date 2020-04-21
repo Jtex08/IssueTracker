@@ -34,10 +34,10 @@ namespace IssueTracker.Pages.Settings
             var user = _profileManager.CurrentUser;
             if (user != null)
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                IdentityResult result = await _userManager.DeleteAsync(user).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignOutAsync();
+                    await _signInManager.SignOutAsync().ConfigureAwait(false);
                     return RedirectToPage("/Index");
                 }
                 else

@@ -28,7 +28,7 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -63,7 +63,7 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
 
         public async Task<IActionResult> OnPostGenerateNewAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -73,7 +73,7 @@ namespace IssueTracker.Pages.Settings.TwoFactorAuth
                 return RedirectToPage("./Config");
             }
 
-            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+            await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10).ConfigureAwait(false);
             TempData["StatusMessage"] = $"You generate new 2FA recovery codes.";
 
             return RedirectToPage();

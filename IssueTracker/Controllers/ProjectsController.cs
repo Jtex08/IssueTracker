@@ -86,16 +86,16 @@ namespace IssueTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description")] Project project)
         {
-            //var userIDD = _profileManager.CurrentUser.Id;
-            //project.Users.Add(_profileManager.CurrentUser);
-            //project.OwnerUserId = _profileManager.CurrentUser.Id;
-            //var thisUser = _context.Users.FindAsync(userIDD);
-            //project.Users.Add(thisUser);
 
-            //var tuck = _userManager.GetUserId(User);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
 
             project.Created = DateTimeOffset.Now;
-            //project.OwnerUserId = userIDD;
+
 
             try
             {

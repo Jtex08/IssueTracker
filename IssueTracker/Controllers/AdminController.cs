@@ -53,10 +53,10 @@ namespace IssueTracker.Controllers
                     Email = user.Email
                 };
 
-                IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
+                IdentityResult result = await _userManager.CreateAsync(appUser, user.Password).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(appUser, "Submitter");
+                    await _userManager.AddToRoleAsync(appUser, "Submitter").ConfigureAwait(false);
                     return RedirectToAction("Index");
                 }
                 else
@@ -71,10 +71,10 @@ namespace IssueTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.FindByIdAsync(id).ConfigureAwait(false);
             if (user != null)
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                IdentityResult result = await _userManager.DeleteAsync(user).ConfigureAwait(false);
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -94,7 +94,7 @@ namespace IssueTracker.Controllers
             status.Name = ticketStatus.Name;
 
             _context.TicketStatuses.Add(status);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
             return RedirectToAction(nameof(Index));
 
         }
@@ -105,7 +105,7 @@ namespace IssueTracker.Controllers
             var status = await _context.TicketStatuses.FindAsync(id);
             _context.TicketStatuses.Remove(status);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction("Index");
         }
@@ -120,7 +120,7 @@ namespace IssueTracker.Controllers
 
             _context.TicketTypes.Add(type);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction(nameof(Index));
 
@@ -132,7 +132,7 @@ namespace IssueTracker.Controllers
             var status = await _context.TicketTypes.FindAsync(id);
             _context.TicketTypes.Remove(status);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction("Index");
         }
@@ -148,7 +148,7 @@ namespace IssueTracker.Controllers
 
             _context.TicketPriorities.Add(priority);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction(nameof(Index));
 
@@ -160,7 +160,7 @@ namespace IssueTracker.Controllers
             var priority = await _context.TicketPriorities.FindAsync(id);
             _context.TicketPriorities.Remove(priority);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return RedirectToAction("Index");
         }

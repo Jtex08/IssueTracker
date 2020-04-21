@@ -28,12 +28,12 @@ namespace IssueTracker.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             List<string> names = new List<string>();
-            IdentityRole role = await _roleManager.FindByIdAsync(Role);
+            IdentityRole role = await _roleManager.FindByIdAsync(Role).ConfigureAwait(false);
             if (role != null)
             {
                 foreach (var user in _userManager.Users)
                 {
-                    if (user != null && await _userManager.IsInRoleAsync(user, role.Name))
+                    if (user != null && await _userManager.IsInRoleAsync(user, role.Name).ConfigureAwait(false))
                     {
                         names.Add(user.UserName);
                     }
