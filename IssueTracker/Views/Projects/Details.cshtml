@@ -21,83 +21,85 @@
 
 
 <section class="content">
-    <div class="box-primary">
-        <h4>Project</h4>
-        <hr />
-        <div class="row">
-            <div class="col-lg-6">
-                <dl class="dl-horizontal">
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Title)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Title)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Created)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Created)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Tickets)
-                    </dt>
-                    <dd>
-                        <br />
-                        <table class="table table-sm table-bordered">
-                            <tr>
-                                <th>Ticket</th>
-                                <th>Description</th>
-                                <th>Created On</th>
-                                <th>Priority</th>
-                                <th></th>
-                            </tr>
-                            @foreach (var item in Model.Tickets)
-                            {
+    <div class="box box-default">
+        <div class="box-primary">
+            <h4>Project</h4>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Title)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Created)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Tickets)
+                        </dt>
+                        <dd>
+                            <br />
+                            <table class="table table-sm table-bordered">
                                 <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Title)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Created)
-                                    </td>
-                                    <td>
-                                        @if (item.TicketPriority != null)
-                                        {
-                                            @switch (item.TicketPriority.Name)
-                                            {
-                                                case "Critical":
-                                                    <span class="label label-danger">Critical</span>
-                                                    break;
-                                                case "HIgh":
-                                                    <span class="label label-warning">High</span>
-                                                    break;
-                                                case "Medium":
-                                                    <span class="label label-primary">Medium</span>
-                                                    break;
-                                                default:
-                                                    <span class="label label-default">Low</span>
-                                                    break;
-                                            }
-                                        }
-                                    </td>
-                                    <td>
-                                        <a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
-                                    </td>
+                                    <th>Ticket</th>
+                                    <th>Description</th>
+                                    <th>Created On</th>
+                                    <th>Priority</th>
+                                    <th></th>
                                 </tr>
-                            }
-                        </table>
-                    </dd>
-                </dl>
+                                @foreach (var item in Model.Tickets)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </td>
+                                        <td>
+                                            @if (item.TicketPriority != null)
+                                            {
+                                                @switch (item.TicketPriority.Name)
+                                                {
+                                                    case "Critical":
+                                                        <span class="label label-danger">Critical</span>
+                                                        break;
+                                                    case "HIgh":
+                                                        <span class="label label-warning">High</span>
+                                                        break;
+                                                    case "Medium":
+                                                        <span class="label label-primary">Medium</span>
+                                                        break;
+                                                    default:
+                                                        <span class="label label-default">Low</span>
+                                                        break;
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <a asp-controller="Tickets" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </dd>
+                    </dl>
+                </div>
             </div>
         </div>
         <hr />

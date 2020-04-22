@@ -11,7 +11,9 @@ namespace IssueTracker.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+#pragma warning disable CA1062 // Validate arguments of public methods
             migrationBuilder.CreateTable(
+#pragma warning restore CA1062 // Validate arguments of public methods
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -194,7 +196,9 @@ namespace IssueTracker.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+#pragma warning disable CA1062 // Validate arguments of public methods
             migrationBuilder.DropTable(
+#pragma warning restore CA1062 // Validate arguments of public methods
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(

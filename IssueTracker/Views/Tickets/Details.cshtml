@@ -21,80 +21,86 @@
 <hr />
 
 <section class="content">
-    <div class="box-primary">
-        <hr />
-        <div class="row">
-            <div class="col-lg-6">
-                <dl class="dl-horizontal">
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Title) 
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Title)
-                    </dd>
+    <div class="box box-default">
+        <div class="box-primary">
+            <hr />
+            <div class="row">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Title)
+                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Description)
-                    </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.ProjectTitle)
-                    </dt>
-                    <dd>
-                        <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">@Html.DisplayFor(model => model.ProjectTitle)</a>
-                    </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ProjectTitle)
+                        </dt>
+                        <dd>
+                            <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model.ProjectId">@Html.DisplayFor(model => model.ProjectTitle)</a>
+                        </dd>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.OwnerName)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.OwnerName)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.PercentComplete)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.PercentComplete)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TicketStatus)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.TicketStatus)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TicketPriority)
-                    </dt>
-                    <dd>
-                        @if (Model.TicketPriority != null)
-                        {
-                            @switch (Model.TicketPriority)
+                        <dt>
+                            @Html.DisplayNameFor(model => model.OwnerName)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.OwnerName)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PercentComplete)
+                        </dt>
+                        <dd>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="@Convert.ToString(Model.PercentComplete)" aria-valuemin="0" aria-valuemax="100" style="width: @Convert.ToString(Model.PercentComplete)%">
+                                    @Convert.ToString(Model.PercentComplete)%
+                                </div>
+                            </div>
+
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TicketStatus)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TicketStatus)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TicketPriority)
+                        </dt>
+                        <dd>
+                            @if (Model.TicketPriority != null)
                             {
-                                case "Critical":
-                                    <span class="label label-danger">Critical</span>
-                                    break;
-                                case "HIgh":
-                                    <span class="label label-warning">High</span>
-                                    break;
-                                case "Medium":
-                                    <span class="label label-primary">Medium</span>
-                                    break;
-                                default:
-                                    <span class="label label-default">Low</span>
-                                    break;
+                                @switch (Model.TicketPriority)
+                                {
+                                    case "Critical":
+                                        <span class="label label-danger">Critical</span>
+                                        break;
+                                    case "HIgh":
+                                        <span class="label label-warning">High</span>
+                                        break;
+                                    case "Medium":
+                                        <span class="label label-primary">Medium</span>
+                                        break;
+                                    default:
+                                        <span class="label label-default">Low</span>
+                                        break;
+                                }
                             }
-                        }
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TicketType)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.TicketType)
-                    </dd>
-                    <dt>
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TicketType)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.TicketType)
+                        </dd>
+                        <dt>
                             @Html.DisplayNameFor(model => model.Created)
                         </dt>
                         <dd>
@@ -109,13 +115,14 @@
                                 @TimeZoneInfo.ConvertTime((DateTimeOffset)Model.Updated, TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time")).ToString("M/d/yy h:mm tt")
                             }
                         </dd>
-                    <dd>
-                        <br />
-                        @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
-                    </dd>
-                </dl>
-            </div>
+                        <dd>
+                            <br />
+                            @Html.ActionLink("Edit Ticket", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
+                        </dd>
+                    </dl>
+                </div>
 
+            </div>
         </div>
     </div>
 
@@ -146,16 +153,6 @@
 
                 }
                 <br />
-                @*<b>
-
-                    @if (TimeZoneConverter.TZConvert.TryGetTimeZoneInfo("Central Standard Time") == true)
-                    {
-
-                    }
-                    @TimeZoneConverter.TZConvert.GetTimeZoneInfo("Central Standard Time"));
-                    @TimeZoneInfo.ConvertTime(ticketComment.Created, tz).ToString("M/d/yy h:mm tt")
-
-                </b>*@
 
                 <br />
             }
